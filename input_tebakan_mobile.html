@@ -3,221 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Input Tebakan - Luna</title>
+    <title>Luna - Input Tebakan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="css/styles.css" rel="stylesheet">
-    <style>
-        /* Tebakan Form specific styles */
-        .tebakan-header {
-            background: var(--primary-color);
-            color: white;
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .tebakan-content {
-            padding: 1rem 0;
-        }
-
-        .tebakan-section {
-            background: white;
-            border-radius: 12px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border: 1px solid var(--gray-200);
-        }
-
-        .tebakan-section.active {
-            border-color: var(--primary-color);
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--gray-100);
-        }
-
-        .section-title {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: var(--dark-color);
-            margin: 0;
-        }
-
-        .toggle-btn {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 0.25rem 0.5rem;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .toggle-btn:hover {
-            background: var(--secondary-color);
-        }
-
-        .number-input-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .number-input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid var(--gray-200);
-            border-radius: 8px;
-            text-align: center;
-            font-size: 1rem;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-
-        .number-input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .number-input.valid {
-            border-color: var(--success-color);
-            background: #f0fdf4;
-        }
-
-        .number-input.invalid {
-            border-color: var(--danger-color);
-            background: #fef2f2;
-        }
-
-        .quick-numbers {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .quick-number {
-            background: var(--gray-100);
-            color: var(--dark-color);
-            border: none;
-            border-radius: 6px;
-            padding: 0.5rem 0.75rem;
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .quick-number:hover {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        .quick-number:active {
-            transform: scale(0.95);
-        }
-
-        .quantity-control {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .quantity-btn {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .quantity-btn:hover {
-            background: var(--secondary-color);
-            transform: scale(1.1);
-        }
-
-        .quantity-display {
-            background: var(--gray-100);
-            border: 2px solid var(--gray-200);
-            border-radius: 6px;
-            padding: 0.5rem 1rem;
-            font-weight: bold;
-            min-width: 60px;
-            text-align: center;
-        }
-
-        .price-display {
-            background: var(--success-color);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .summary-card {
-            background: var(--primary-color);
-            color: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-        }
-
-        .summary-total {
-            border-top: 2px solid rgba(255,255,255,0.3);
-            padding-top: 0.5rem;
-            margin-top: 0.5rem;
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-
-        .tebakan-actions {
-            position: sticky;
-            bottom: 0;
-            background: white;
-            padding: 1rem 0;
-            border-top: 1px solid var(--gray-200);
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 576px) {
-            .number-input-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-            
-            .quick-numbers {
-                justify-content: center;
-            }
-        }
-    </style>
 </head>
 <body>
-    <!-- Header -->
-    <div class="tebakan-header">
-        <div class="container">
+    <div class="mobile-dashboard">
+        <!-- Header -->
+        <div class="mobile-header">
             <div class="d-flex align-items-center">
                 <button class="btn btn-outline-light btn-sm me-3" onclick="goBack()">
                     <i class="fas fa-arrow-left"></i>
@@ -228,148 +22,168 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Content -->
-    <div class="tebakan-content">
-        <div class="container">
+        <!-- Content -->
+        <div class="mobile-content">
             <!-- 4D Section -->
-            <div class="tebakan-section active" id="section-4d">
-                <div class="section-header">
-                    <h6 class="section-title">4D (4 Digit)</h6>
-                    <button class="toggle-btn" onclick="toggleSection('4d')">
+            <div class="card mb-3" id="section-4d">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">4D (4 Digit)</h6>
+                    <button class="btn btn-sm btn-outline-primary" onclick="toggleSection('4d')">
                         <i class="fas fa-chevron-down"></i>
                     </button>
                 </div>
-                <div class="section-content">
-                    <div class="number-input-grid">
-                        <input type="text" class="number-input" maxlength="1" data-type="4d" data-position="0">
-                        <input type="text" class="number-input" maxlength="1" data-type="4d" data-position="1">
-                        <input type="text" class="number-input" maxlength="1" data-type="4d" data-position="2">
-                        <input type="text" class="number-input" maxlength="1" data-type="4d" data-position="3">
+                <div class="card-body">
+                    <div class="row g-2 mb-3">
+                        <div class="col-3">
+                            <input type="text" class="form-control text-center" maxlength="1" data-type="4d" data-position="0" placeholder="0">
+                        </div>
+                        <div class="col-3">
+                            <input type="text" class="form-control text-center" maxlength="1" data-type="4d" data-position="1" placeholder="0">
+                        </div>
+                        <div class="col-3">
+                            <input type="text" class="form-control text-center" maxlength="1" data-type="4d" data-position="2" placeholder="0">
+                        </div>
+                        <div class="col-3">
+                            <input type="text" class="form-control text-center" maxlength="1" data-type="4d" data-position="3" placeholder="0">
+                        </div>
                     </div>
-                    <div class="quick-numbers">
-                        <button class="quick-number" onclick="fillQuickNumber('4d', '1111')">1111</button>
-                        <button class="quick-number" onclick="fillQuickNumber('4d', '2222')">2222</button>
-                        <button class="quick-number" onclick="fillQuickNumber('4d', '3333')">3333</button>
-                        <button class="quick-number" onclick="fillQuickNumber('4d', '4444')">4444</button>
-                        <button class="quick-number" onclick="fillQuickNumber('4d', '5555')">5555</button>
-                        <button class="quick-number" onclick="fillQuickNumber('4d', '6666')">6666</button>
-                        <button class="quick-number" onclick="fillQuickNumber('4d', '7777')">7777</button>
-                        <button class="quick-number" onclick="fillQuickNumber('4d', '8888')">8888</button>
-                        <button class="quick-number" onclick="fillQuickNumber('4d', '9999')">9999</button>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('4d', '1111')">1111</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('4d', '2222')">2222</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('4d', '3333')">3333</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('4d', '4444')">4444</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('4d', '5555')">5555</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('4d', '6666')">6666</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('4d', '7777')">7777</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('4d', '8888')">8888</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('4d', '9999')">9999</button>
                     </div>
-                    <div class="quantity-control">
-                        <button class="quantity-btn" onclick="changeQuantity('4d', -1)">-</button>
-                        <div class="quantity-display" id="quantity-4d">1</div>
-                        <button class="quantity-btn" onclick="changeQuantity('4d', 1)">+</button>
-                        <div class="price-display" id="price-4d">Rp 1.000</div>
+                    <div class="d-flex align-items-center gap-3">
+                        <button class="btn btn-outline-primary btn-sm" onclick="changeQuantity('4d', -1)">-</button>
+                        <div class="badge bg-primary fs-6" id="quantity-4d">1</div>
+                        <button class="btn btn-outline-primary btn-sm" onclick="changeQuantity('4d', 1)">+</button>
+                        <div class="badge bg-success fs-6" id="price-4d">Rp 1.000</div>
                     </div>
                 </div>
             </div>
 
             <!-- 3D Section -->
-            <div class="tebakan-section" id="section-3d">
-                <div class="section-header">
-                    <h6 class="section-title">3D (3 Digit)</h6>
-                    <button class="toggle-btn" onclick="toggleSection('3d')">
+            <div class="card mb-3" id="section-3d">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">3D (3 Digit)</h6>
+                    <button class="btn btn-sm btn-outline-primary" onclick="toggleSection('3d')">
                         <i class="fas fa-chevron-down"></i>
                     </button>
                 </div>
-                <div class="section-content">
-                    <div class="number-input-grid">
-                        <input type="text" class="number-input" maxlength="1" data-type="3d" data-position="0">
-                        <input type="text" class="number-input" maxlength="1" data-type="3d" data-position="1">
-                        <input type="text" class="number-input" maxlength="1" data-type="3d" data-position="2">
+                <div class="card-body">
+                    <div class="row g-2 mb-3">
+                        <div class="col-4">
+                            <input type="text" class="form-control text-center" maxlength="1" data-type="3d" data-position="0" placeholder="0">
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control text-center" maxlength="1" data-type="3d" data-position="1" placeholder="0">
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control text-center" maxlength="1" data-type="3d" data-position="2" placeholder="0">
+                        </div>
                     </div>
-                    <div class="quick-numbers">
-                        <button class="quick-number" onclick="fillQuickNumber('3d', '111')">111</button>
-                        <button class="quick-number" onclick="fillQuickNumber('3d', '222')">222</button>
-                        <button class="quick-number" onclick="fillQuickNumber('3d', '333')">333</button>
-                        <button class="quick-number" onclick="fillQuickNumber('3d', '444')">444</button>
-                        <button class="quick-number" onclick="fillQuickNumber('3d', '555')">555</button>
-                        <button class="quick-number" onclick="fillQuickNumber('3d', '666')">666</button>
-                        <button class="quick-number" onclick="fillQuickNumber('3d', '777')">777</button>
-                        <button class="quick-number" onclick="fillQuickNumber('3d', '888')">888</button>
-                        <button class="quick-number" onclick="fillQuickNumber('3d', '999')">999</button>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('3d', '111')">111</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('3d', '222')">222</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('3d', '333')">333</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('3d', '444')">444</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('3d', '555')">555</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('3d', '666')">666</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('3d', '777')">777</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('3d', '888')">888</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('3d', '999')">999</button>
                     </div>
-                    <div class="quantity-control">
-                        <button class="quantity-btn" onclick="changeQuantity('3d', -1)">-</button>
-                        <div class="quantity-display" id="quantity-3d">1</div>
-                        <button class="quantity-btn" onclick="changeQuantity('3d', 1)">+</button>
-                        <div class="price-display" id="price-3d">Rp 500</div>
+                    <div class="d-flex align-items-center gap-3">
+                        <button class="btn btn-outline-primary btn-sm" onclick="changeQuantity('3d', -1)">-</button>
+                        <div class="badge bg-primary fs-6" id="quantity-3d">1</div>
+                        <button class="btn btn-outline-primary btn-sm" onclick="changeQuantity('3d', 1)">+</button>
+                        <div class="badge bg-success fs-6" id="price-3d">Rp 500</div>
                     </div>
                 </div>
             </div>
 
             <!-- 2D Section -->
-            <div class="tebakan-section" id="section-2d">
-                <div class="section-header">
-                    <h6 class="section-title">2D (2 Digit)</h6>
-                    <button class="toggle-btn" onclick="toggleSection('2d')">
+            <div class="card mb-3" id="section-2d">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">2D (2 Digit)</h6>
+                    <button class="btn btn-sm btn-outline-primary" onclick="toggleSection('2d')">
                         <i class="fas fa-chevron-down"></i>
                     </button>
                 </div>
-                <div class="section-content">
-                    <div class="number-input-grid">
-                        <input type="text" class="number-input" maxlength="1" data-type="2d" data-position="0">
-                        <input type="text" class="number-input" maxlength="1" data-type="2d" data-position="1">
+                <div class="card-body">
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <input type="text" class="form-control text-center" maxlength="1" data-type="2d" data-position="0" placeholder="0">
+                        </div>
+                        <div class="col-6">
+                            <input type="text" class="form-control text-center" maxlength="1" data-type="2d" data-position="1" placeholder="0">
+                        </div>
                     </div>
-                    <div class="quick-numbers">
-                        <button class="quick-number" onclick="fillQuickNumber('2d', '11')">11</button>
-                        <button class="quick-number" onclick="fillQuickNumber('2d', '22')">22</button>
-                        <button class="quick-number" onclick="fillQuickNumber('2d', '33')">33</button>
-                        <button class="quick-number" onclick="fillQuickNumber('2d', '44')">44</button>
-                        <button class="quick-number" onclick="fillQuickNumber('2d', '55')">55</button>
-                        <button class="quick-number" onclick="fillQuickNumber('2d', '66')">66</button>
-                        <button class="quick-number" onclick="fillQuickNumber('2d', '77')">77</button>
-                        <button class="quick-number" onclick="fillQuickNumber('2d', '88')">88</button>
-                        <button class="quick-number" onclick="fillQuickNumber('2d', '99')">99</button>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('2d', '11')">11</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('2d', '22')">22</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('2d', '33')">33</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('2d', '44')">44</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('2d', '55')">55</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('2d', '66')">66</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('2d', '77')">77</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('2d', '88')">88</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillQuickNumber('2d', '99')">99</button>
                     </div>
-                    <div class="quantity-control">
-                        <button class="quantity-btn" onclick="changeQuantity('2d', -1)">-</button>
-                        <div class="quantity-display" id="quantity-2d">1</div>
-                        <button class="quantity-btn" onclick="changeQuantity('2d', 1)">+</button>
-                        <div class="price-display" id="price-2d">Rp 200</div>
+                    <div class="d-flex align-items-center gap-3">
+                        <button class="btn btn-outline-primary btn-sm" onclick="changeQuantity('2d', -1)">-</button>
+                        <div class="badge bg-primary fs-6" id="quantity-2d">1</div>
+                        <button class="btn btn-outline-primary btn-sm" onclick="changeQuantity('2d', 1)">+</button>
+                        <div class="badge bg-success fs-6" id="price-2d">Rp 200</div>
                     </div>
                 </div>
             </div>
 
             <!-- Summary Card -->
-            <div class="summary-card">
-                <h6 class="mb-3">Ringkasan Tebakan</h6>
-                <div class="summary-item">
-                    <span>4D (1x)</span>
-                    <span>Rp 1.000</span>
-                </div>
-                <div class="summary-item">
-                    <span>3D (1x)</span>
-                    <span>Rp 500</span>
-                </div>
-                <div class="summary-item">
-                    <span>2D (1x)</span>
-                    <span>Rp 200</span>
-                </div>
-                <div class="summary-total">
-                    <span>Total: Rp 1.700</span>
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h6 class="mb-3">Ringkasan Tebakan</h6>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>4D (1x)</span>
+                        <span>Rp 1.000</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>3D (1x)</span>
+                        <span>Rp 500</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>2D (1x)</span>
+                        <span>Rp 200</span>
+                    </div>
+                    <hr class="my-2">
+                    <div class="d-flex justify-content-between fw-bold fs-5">
+                        <span>Total:</span>
+                        <span>Rp 1.700</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Action Buttons -->
-    <div class="tebakan-actions">
-        <div class="container">
-            <div class="row g-2">
-                <div class="col-6">
-                    <button class="btn btn-secondary w-100" onclick="clearAll()">
-                        <i class="fas fa-trash me-2"></i>Clear
-                    </button>
-                </div>
-                <div class="col-6">
-                    <button class="btn btn-primary w-100" id="submit-btn" onclick="submitTebakan()" disabled>
-                        <i class="fas fa-check me-2"></i>Submit
-                    </button>
+        <!-- Action Buttons -->
+        <div class="mobile-bottom-nav">
+            <div class="container">
+                <div class="row g-2">
+                    <div class="col-6">
+                        <button class="btn btn-secondary w-100" onclick="clearAll()">
+                            <i class="fas fa-trash me-2"></i>Clear
+                        </button>
+                    </div>
+                    <div class="col-6">
+                        <button class="btn btn-primary w-100" id="submit-btn" onclick="submitTebakan()" disabled>
+                            <i class="fas fa-check me-2"></i>Submit
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -384,13 +198,13 @@
 
         function toggleSection(type) {
             const section = document.getElementById(`section-${type}`);
-            const btn = section.querySelector('.toggle-btn i');
+            const btn = section.querySelector('.btn i');
             
-            if (section.classList.contains('active')) {
-                section.classList.remove('active');
+            if (section.classList.contains('collapsed')) {
+                section.classList.remove('collapsed');
                 btn.className = 'fas fa-chevron-down';
             } else {
-                section.classList.add('active');
+                section.classList.add('collapsed');
                 btn.className = 'fas fa-chevron-up';
             }
         }
@@ -402,7 +216,8 @@
             inputs.forEach((input, index) => {
                 if (digits[index]) {
                     input.value = digits[index];
-                    input.classList.add('valid');
+                    input.classList.add('is-valid');
+                    input.classList.remove('is-invalid');
                 }
             });
             
@@ -432,18 +247,27 @@
 
         function updateSummary() {
             // This would calculate totals from all sections
-            // For now, just enable submit button
-            document.getElementById('submit-btn').disabled = false;
+            // For now, just enable submit button if any input has value
+            const inputs = document.querySelectorAll('.form-control');
+            let hasValue = false;
+            
+            inputs.forEach(input => {
+                if (input.value.trim() !== '') {
+                    hasValue = true;
+                }
+            });
+            
+            document.getElementById('submit-btn').disabled = !hasValue;
         }
 
         function clearAll() {
-            const inputs = document.querySelectorAll('.number-input');
+            const inputs = document.querySelectorAll('.form-control');
             inputs.forEach(input => {
                 input.value = '';
-                input.classList.remove('valid', 'invalid');
+                input.classList.remove('is-valid', 'is-invalid');
             });
             
-            const quantities = document.querySelectorAll('.quantity-display');
+            const quantities = document.querySelectorAll('[id^="quantity-"]');
             quantities.forEach(qty => qty.textContent = '1');
             
             updateSummary();
@@ -497,24 +321,24 @@
         // Initialize form
         document.addEventListener('DOMContentLoaded', function() {
             // Add input event listeners
-            const inputs = document.querySelectorAll('.number-input');
+            const inputs = document.querySelectorAll('.form-control');
             inputs.forEach(input => {
                 input.addEventListener('input', function() {
                     const value = this.value;
                     if (value && /^\d$/.test(value)) {
-                        this.classList.remove('invalid');
-                        this.classList.add('valid');
+                        this.classList.remove('is-invalid');
+                        this.classList.add('is-valid');
                         
                         // Move to next input
-                        const nextInput = this.parentElement.querySelector(`[data-position="${parseInt(this.dataset.position) + 1}"]`);
+                        const nextInput = this.parentElement.parentElement.querySelector(`[data-position="${parseInt(this.dataset.position) + 1}"]`);
                         if (nextInput) {
                             nextInput.focus();
                         }
                     } else if (value) {
-                        this.classList.remove('valid');
-                        this.classList.add('invalid');
+                        this.classList.remove('is-valid');
+                        this.classList.add('is-invalid');
                     } else {
-                        this.classList.remove('valid', 'invalid');
+                        this.classList.remove('is-valid', 'is-invalid');
                     }
                     
                     updateSummary();
@@ -523,7 +347,7 @@
                 input.addEventListener('keydown', function(e) {
                     if (e.key === 'Backspace' && !this.value) {
                         // Move to previous input
-                        const prevInput = this.parentElement.querySelector(`[data-position="${parseInt(this.dataset.position) - 1}"]`);
+                        const prevInput = this.parentElement.parentElement.querySelector(`[data-position="${parseInt(this.dataset.position) - 1}"]`);
                         if (prevInput) {
                             prevInput.focus();
                         }

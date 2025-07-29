@@ -3,328 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luna - Dashboard Mobile</title>
+    <title>Luna - Mobile Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="css/styles.css" rel="stylesheet">
-    <style>
-        /* Mobile Dashboard specific styles */
-        .mobile-header {
-            background: var(--primary-color);
-            color: white;
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .mobile-stats {
-            padding: 1rem 0;
-        }
-
-        .mobile-stat-card {
-            background: white;
-            border-radius: 12px;
-            padding: 1rem;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border: 1px solid var(--gray-200);
-            height: 100%;
-        }
-
-        .mobile-stat-number {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-
-        .mobile-stat-label {
-            font-size: 0.8rem;
-            color: var(--gray-500);
-            margin-top: 0.25rem;
-        }
-
-        .mobile-content {
-            padding: 1rem 0;
-        }
-
-        .mobile-action-btn {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 1rem;
-            font-size: 0.9rem;
-            font-weight: 500;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            text-decoration: none;
-            height: 100%;
-        }
-
-        .mobile-action-btn:hover {
-            background: var(--secondary-color);
-            transform: translateY(-2px);
-            color: white;
-        }
-
-        .mobile-action-btn i {
-            font-size: 1.5rem;
-        }
-
-        .mobile-transaction-item {
-            background: white;
-            border-radius: 8px;
-            padding: 0.75rem;
-            margin-bottom: 0.5rem;
-            border: 1px solid var(--gray-200);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .mobile-transaction-info h6 {
-            margin: 0;
-            font-size: 0.9rem;
-            color: var(--dark-color);
-        }
-
-        .mobile-transaction-info p {
-            margin: 0;
-            font-size: 0.8rem;
-            color: var(--gray-500);
-        }
-
-        .mobile-transaction-amount {
-            font-weight: bold;
-            color: var(--success-color);
-        }
-
-        .mobile-floating-btn {
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            width: 56px;
-            height: 56px;
-            background: var(--success-color);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            z-index: 1000;
-        }
-
-        .mobile-floating-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .mobile-bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            border-top: 1px solid var(--gray-200);
-            display: flex;
-            justify-content: space-around;
-            padding: 0.5rem 0;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-            z-index: 1000;
-        }
-
-        .mobile-nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.25rem;
-            color: var(--gray-500);
-            text-decoration: none;
-            font-size: 0.8rem;
-            transition: color 0.3s ease;
-        }
-
-        .mobile-nav-item.active {
-            color: var(--primary-color);
-        }
-
-        .mobile-nav-item i {
-            font-size: 1.2rem;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 576px) {
-            .mobile-floating-btn {
-                right: 15px;
-                bottom: 70px;
-            }
-        }
-    </style>
 </head>
 <body>
-    <!-- Header -->
-    <div class="mobile-header">
-        <div class="container">
-            <div class="d-flex align-items-center">
+    <div class="mobile-dashboard">
+        <!-- Header -->
+        <div class="mobile-header">
+            <div class="d-flex justify-content-between align-items-center">
                 <div class="user-info">
                     <div class="avatar">
                         <i class="fas fa-user"></i>
                     </div>
-                    <div>
-                        <h6 class="mb-0">John Doe</h6>
-                        <small>Penjual</small>
+                    <div class="user-details">
+                        <h6 class="mb-0">Admin Luna</h6>
+                        <small>Super Admin</small>
                     </div>
-                    <div class="ms-auto">
-                        <i class="fas fa-bell"></i>
+                </div>
+                <button class="btn btn-outline-light btn-sm" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="mobile-stats">
+            <div class="row g-2">
+                <div class="col-6">
+                    <div class="mobile-stat-card">
+                        <div class="mobile-stat-number">Rp 2.5M</div>
+                        <div class="mobile-stat-label">Total Transaksi</div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mobile-stat-card bos-stats">
+                        <div class="mobile-stat-number">
+                            <span id="bos-aktif">4</span>/<span id="bos-total">4</span>
+                        </div>
+                        <div class="mobile-stat-label">BOS (Aktif/Total)</div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mobile-stat-card">
+                        <div class="mobile-stat-number">156</div>
+                        <div class="mobile-stat-label">Transaksi Hari Ini</div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mobile-stat-card">
+                        <div class="mobile-stat-number">24</div>
+                        <div class="mobile-stat-label">User Aktif</div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Quick Stats -->
-    <div class="mobile-stats">
-        <div class="container">
-            <div class="row g-3">
+        <!-- Content Section -->
+        <div class="mobile-content">
+            <!-- Quick Actions -->
+            <h6 class="mb-3">Aksi Cepat</h6>
+            <div class="row g-2 mb-4">
                 <div class="col-6">
-                    <div class="mobile-stat-card">
-                        <div class="mobile-stat-number" id="omset-hari-ini">Rp 2.5M</div>
-                        <div class="mobile-stat-label">Omset Hari Ini</div>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="mobile-stat-card">
-                        <div class="mobile-stat-number" id="total-transaksi">156</div>
-                        <div class="mobile-stat-label">Transaksi</div>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="mobile-stat-card">
-                        <div class="mobile-stat-number" id="komisi">Rp 125K</div>
-                        <div class="mobile-stat-label">Komisi</div>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="mobile-stat-card">
-                        <div class="mobile-stat-number" id="target">89%</div>
-                        <div class="mobile-stat-label">Target</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Action Buttons -->
-    <div class="mobile-content">
-        <div class="container">
-            <div class="row g-3 mb-4">
-                <div class="col-6">
-                    <button class="mobile-action-btn" onclick="openInputTebakan()">
-                        <i class="fas fa-plus"></i>
-                        Input Tebakan
+                    <button class="mobile-action-btn" onclick="openTebakan()">
+                        <i class="fas fa-dice"></i>
+                        <span>Input Tebakan</span>
                     </button>
                 </div>
                 <div class="col-6">
-                    <button class="mobile-action-btn" onclick="openCekSaldo()">
+                    <button class="mobile-action-btn" onclick="openDeposit()">
                         <i class="fas fa-wallet"></i>
-                        Cek Saldo
+                        <span>Deposit</span>
                     </button>
                 </div>
                 <div class="col-6">
-                    <button class="mobile-action-btn" onclick="openLaporan()">
+                    <button class="mobile-action-btn" onclick="openWithdraw()">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>Withdraw</span>
+                    </button>
+                </div>
+                <div class="col-6">
+                    <button class="mobile-action-btn" onclick="openReport()">
                         <i class="fas fa-chart-bar"></i>
-                        Laporan
-                    </button>
-                </div>
-                <div class="col-6">
-                    <button class="mobile-action-btn" onclick="openPengaturan()">
-                        <i class="fas fa-cog"></i>
-                        Pengaturan
+                        <span>Laporan</span>
                     </button>
                 </div>
             </div>
 
             <!-- Recent Transactions -->
+            <h6 class="mb-3">Transaksi Terbaru</h6>
             <div class="recent-transactions">
-                <h6 class="mb-3">Transaksi Terbaru</h6>
                 <div class="mobile-transaction-item">
                     <div class="mobile-transaction-info">
-                        <h6>TRX20241201001</h6>
-                        <p>4D - 1234 (1x)</p>
+                        <h6 class="mb-1">TXN-001</h6>
+                        <p class="mb-0">4D - 1234 (Rp 10.000)</p>
                     </div>
-                    <div class="mobile-transaction-amount">+Rp 50.000</div>
+                    <div class="mobile-transaction-amount">+Rp 30.000</div>
                 </div>
                 <div class="mobile-transaction-item">
                     <div class="mobile-transaction-info">
-                        <h6>TRX20241201002</h6>
-                        <p>3D - 234 (2x)</p>
+                        <h6 class="mb-1">TXN-002</h6>
+                        <p class="mb-0">2D - 56 (Rp 5.000)</p>
                     </div>
-                    <div class="mobile-transaction-amount">+Rp 25.000</div>
+                    <div class="mobile-transaction-amount">+Rp 350.000</div>
                 </div>
                 <div class="mobile-transaction-item">
                     <div class="mobile-transaction-info">
-                        <h6>TRX20241201003</h6>
-                        <p>2D - 34 (1x)</p>
+                        <h6 class="mb-1">TXN-003</h6>
+                        <p class="mb-0">Deposit (Rp 100.000)</p>
                     </div>
-                    <div class="mobile-transaction-amount">+Rp 10.000</div>
+                    <div class="mobile-transaction-amount text-success">+Rp 100.000</div>
+                </div>
+                <div class="mobile-transaction-item">
+                    <div class="mobile-transaction-info">
+                        <h6 class="mb-1">TXN-004</h6>
+                        <p class="mb-0">Withdraw (Rp 50.000)</p>
+                    </div>
+                    <div class="mobile-transaction-amount text-danger">-Rp 50.000</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <button class="mobile-floating-btn" onclick="openQuickAction()">
+            <i class="fas fa-plus"></i>
+        </button>
+
+        <!-- Bottom Navigation -->
+        <div class="mobile-bottom-nav">
+            <a href="#" class="mobile-nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="#" class="mobile-nav-item">
+                <i class="fas fa-dice"></i>
+                <span>Tebakan</span>
+            </a>
+            <a href="#" class="mobile-nav-item">
+                <i class="fas fa-wallet"></i>
+                <span>Wallet</span>
+            </a>
+            <a href="#" class="mobile-nav-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>Report</span>
+            </a>
+            <a href="#" class="mobile-nav-item">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Bootstrap Modal for Quick Actions -->
+    <div class="modal fade" id="quickActionModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Aksi Cepat</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <button class="btn btn-primary w-100" onclick="openTebakan()">
+                                <i class="fas fa-dice mb-2"></i><br>
+                                Input Tebakan
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-success w-100" onclick="openDeposit()">
+                                <i class="fas fa-wallet mb-2"></i><br>
+                                Deposit
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-warning w-100" onclick="openWithdraw()">
+                                <i class="fas fa-money-bill-wave mb-2"></i><br>
+                                Withdraw
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-info w-100" onclick="openReport()">
+                                <i class="fas fa-chart-bar mb-2"></i><br>
+                                Laporan
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Floating Action Button -->
-    <button class="mobile-floating-btn" onclick="quickInput()">
-        <i class="fas fa-bolt"></i>
-    </button>
-
-    <!-- Bottom Navigation -->
-    <div class="mobile-bottom-nav">
-        <a href="#" class="mobile-nav-item active">
-            <i class="fas fa-home"></i>
-            <span>Beranda</span>
-        </a>
-        <a href="input_tebakan_mobile.html" class="mobile-nav-item">
-            <i class="fas fa-dice"></i>
-            <span>Tebakan</span>
-        </a>
-        <a href="#" class="mobile-nav-item">
-            <i class="fas fa-history"></i>
-            <span>Riwayat</span>
-        </a>
-        <a href="#" class="mobile-nav-item">
-            <i class="fas fa-user"></i>
-            <span>Profil</span>
-        </a>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/app.js"></script>
     <script>
-        function openInputTebakan() {
-            window.location.href = 'input_tebakan_mobile.html';
-        }
-
-        function openCekSaldo() {
-            alert('Membuka halaman cek saldo...');
-        }
-
-        function openLaporan() {
-            alert('Membuka halaman laporan...');
-        }
-
-        function openPengaturan() {
-            alert('Membuka halaman pengaturan...');
-        }
-
-        function quickInput() {
-            window.location.href = 'input_tebakan_mobile.html';
-        }
+        // Ensure dashboard loads when page is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof LunaDashboard !== 'undefined') {
+                LunaDashboard.loadDashboard();
+            }
+        });
     </script>
 </body>
 </html>

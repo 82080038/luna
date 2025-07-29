@@ -1,405 +1,349 @@
-# 🌙 Luna - Sistem Tebakan Angka Mobile-First
+# 🌙 Luna System - Sistem Tebakan Angka
 
-## 📱 **Deskripsi Sistem**
+Sistem manajemen tebakan angka yang modern dan responsif dengan arsitektur multi-role dan mobile-first design.
 
-Luna adalah sistem manajemen tebakan angka yang dioptimalkan untuk penggunaan mobile dengan fokus pada angka dan transaksi keuangan. Sistem ini dirancang dengan arsitektur multi-level user hierarchy dan keamanan tingkat tinggi.
+## 🚀 **Fitur Utama**
 
-## 🎯 **Fitur Utama**
+- **Multi-Role System**: Super Admin, Bos, Admin Bos, Transporter, Penjual, Pembeli
+- **Mobile-First Design**: Responsif di semua perangkat
+- **Bootstrap 5.3.0**: Framework CSS modern dan konsisten
+- **Real-time Dashboard**: Statistik dan monitoring real-time
+- **BOS Statistics**: Monitoring jumlah BOS aktif dan tidak aktif
+- **Input Tebakan**: Interface yang user-friendly untuk input tebakan
+- **Tambah User Bos**: Form lengkap untuk menambahkan user Bos baru dengan data pribadi, kontak, dan alamat
+- **Database MySQL Optimized**: Struktur database yang terorganisir dan teroptimasi
 
-### **📊 Dashboard Mobile**
-- **Statistik Real-time** - Omset, transaksi, komisi, target
-- **Quick Actions** - Input tebakan, cek saldo, laporan
-- **Recent Transactions** - Riwayat transaksi terbaru
-- **Floating Action Button** - Akses cepat untuk input tebakan
+## 🎨 **Perbaikan Tampilan (v2.0)**
 
-### **🖥️ Super Admin Dashboard**
-- **System Overview** - Total users, servers, revenue, growth rate
-- **System Alerts** - Maintenance alerts, pending registrations, failed transactions
-- **Recent Transactions** - All system transactions with detailed info
-- **Server Status** - Real-time server monitoring and management
-- **Quick Actions** - Manage users, servers, reports, system settings
-- **Recent Users** - Latest user registrations and status
-- **System Info** - Database status, backup info, uptime, active sessions
+### **CSS & Bootstrap Integration**
+- ✅ **Mengutamakan Bootstrap**: Semua komponen menggunakan Bootstrap 5.3.0
+- ✅ **Menghapus Konflik CSS**: Tidak ada lagi konflik antara custom CSS dan Bootstrap
+- ✅ **Responsive Design**: Tampilan yang sempurna di mobile, tablet, dan desktop
+- ✅ **Consistent Styling**: Semua halaman memiliki tampilan yang konsisten
 
-### **🎲 Input Tebakan Mobile**
-- **Number-Focused Design** - Input angka yang besar dan mudah
-- **Quick Numbers** - Tombol cepat untuk angka populer (0000, 1111, dll)
-- **Collapsible Sections** - 4D, 3D, 2D, CE, CK, CB
-- **Real-time Calculation** - Kalkulasi harga otomatis
-- **Validation** - Validasi format dan batas angka
+### **Halaman yang Diperbaiki**
+1. **Login Page** (`index.html`) - Form yang lebih baik dengan validation
+2. **Mobile Dashboard** (`mobile_dashboard.html`) - Layout yang modern dengan cards
+3. **Super Admin Dashboard** (`super_admin_dashboard.html`) - Interface admin yang profesional
+4. **Input Tebakan** (`input_tebakan_mobile.html`) - Form input yang user-friendly
 
-### **👥 Hierarki User**
+## 🛠️ **Cara Menjalankan**
+
+### **1. Setup Local Server**
+```bash
+# Menggunakan XAMPP
+# 1. Copy folder ke C:\xampp\htdocs\luna\
+# 2. Start Apache dan MySQL di XAMPP
+# 3. Buka http://localhost/luna/
 ```
-Super Admin (Desktop)
-├── Bos (Mobile + Desktop)
-│   ├── Admin Bos (Mobile)
-│   └── Transporter (Mobile)
-│       └── Penjual (Mobile)
-│           └── Pembeli (Mobile)
+
+### **2. Setup Database (RECOMMENDED)**
+```bash
+# Database Optimized - Struktur terbaik untuk production
+# 1. Buka phpMyAdmin: http://localhost/phpmyadmin
+# 2. Import db/database_optimized.sql
+# 3. Jalankan db/insert_dummy_optimized.sql untuk data dummy
 ```
 
-### **💰 Sistem Keuangan**
-- **Deposit Management** - Topup, cek saldo, transfer
-- **Commission System** - Komisi otomatis berdasarkan role
-- **Transaction History** - Riwayat lengkap semua transaksi
-- **Financial Reports** - Laporan keuangan real-time
+### **3. Login Demo**
+```
+Username: admin
+Password: admin123
+Role: Super Admin
+```
 
-## 🛡️ **Keamanan & Best Practices**
+### **4. Test API Connection**
+```bash
+# Test BOS Statistics API
+http://localhost/luna/api/get_bos_statistics.php
 
-### **Authentication & Authorization**
-- **Multi-Factor Authentication (MFA)** untuk role penting
-- **Session Management** dengan timeout berdasarkan role
-- **Role-Based Access Control (RBAC)** yang ketat
-- **Password Policy** yang kuat
+# Test Add Bos API (POST request)
+http://localhost/luna/api/add_bos.php
+```
 
-### **Data Protection**
-- **Input Validation** ketat untuk semua input angka
-- **SQL Injection Prevention** dengan parameterized queries
-- **XSS Prevention** dengan sanitasi output
-- **CSRF Protection** untuk semua form
-
-### **Financial Security**
-- **Transaction Validation** dengan multiple checks
-- **Audit Trail** lengkap untuk semua transaksi
-- **Suspicious Activity Detection** otomatis
-- **Daily Limits** berdasarkan role user
-
-## 📱 **UI/UX Mobile-First**
-
-### **Design Principles**
-- **Touch-Friendly** - Minimal 44px touch target
-- **Large Numbers** - Font size 2rem untuk angka
-- **Quick Actions** - Tombol akses cepat
-- **Responsive** - Optimized untuk semua ukuran layar
-
-### **User Experience**
-- **Loading States** - Feedback visual untuk operasi
-- **Error Handling** - Pesan error yang user-friendly
-- **Confirmation Dialogs** - Konfirmasi untuk aksi penting
-- **Offline Support** - Cache data untuk koneksi lambat
-
-### **📱 Responsive Design dengan Bootstrap Container**
-
-Semua halaman Luna menggunakan **Bootstrap 5.3.0** dengan container system yang responsif:
-
-#### **🖥️ Super Admin Dashboard:**
-- **Container System** - `.container` untuk layout responsif
-- **Grid System** - `.row` dan `.col-*` untuk responsive columns
-- **Breakpoints** - `col-12 col-sm-6 col-lg-3` untuk statistik cards
-- **Main Content** - `col-12 col-lg-8` untuk main section, `col-12 col-lg-4` untuk sidebar
-
-#### **📱 Mobile Dashboard:**
-- **Container System** - `.container` untuk semua content
-- **Grid Layout** - `.row g-3` untuk spacing yang konsisten
-- **Responsive Stats** - `col-6` untuk 2x2 grid stats
-- **Action Buttons** - `col-6` untuk 2x2 grid buttons
-- **Mobile Optimized** - Floating button dan bottom navigation
-
-#### **🎲 Input Tebakan Mobile:**
-- **Container System** - `.container` untuk form content
-- **Responsive Grid** - `col-6` untuk action buttons
-- **Sticky Elements** - Header dan action buttons tetap di posisi
-- **Mobile First** - Optimized untuk touch interface
-
-#### **🔐 Login/Register Page:**
-- **Centered Layout** - `.justify-content-center` untuk centering
-- **Responsive Card** - `col-12 col-sm-8 col-md-6 col-lg-4` untuk card sizing
-- **Form Layout** - Bootstrap form classes untuk consistency
-- **Mobile Friendly** - Responsive padding dan spacing
-
-#### **📐 Bootstrap Features yang Digunakan:**
-- **Grid System** - Responsive breakpoints (xs, sm, md, lg, xl)
-- **Utility Classes** - Spacing, flexbox, text, background, borders
-- **Components** - Buttons, forms, cards, tables
-- **CDN Links** - Bootstrap 5.3.0 via CDN untuk performance
-
-#### **📱 Responsive Breakpoints:**
-- **Mobile (<576px)** - Single column layout, full width cards
-- **Tablet (576px - 991px)** - 2-column grid, sidebar stacks
-- **Desktop (≥992px)** - Multi-column layouts, sidebar alongside main
-
-## 🗄️ **Database Structure**
-
-### **Core Tables**
-- `user` - User management dengan role hierarchy
-- `orang` - Data personal user
-- `role` - Role dan permission
-- `server` - Server management
-- `sesi_server` - Session management
-- `tipe_tebakan` - Jenis tebakan (4D, 3D, 2D, dll)
-- `hadiah` - Konfigurasi hadiah
-- `transaksi_tebakan` - Transaksi tebakan
-- `detail_kemenangan` - Detail kemenangan
-- `hasil_tebakan` - Hasil tebakan per sesi
-- `deposit_member` - Saldo deposit user
-- `transaksi_pembayaran` - Transaksi keuangan
-- `metode_pembayaran` - Metode pembayaran
-- `user_ownership` - Relasi ownership
-
-### **Views & Reports**
-- `view_penyerahan_dana` - Laporan penyerahan dana
-- `view_arus_kas` - Laporan arus kas
-- `view_laporan_tebakan` - Laporan tebakan
-- `view_laporan_kemenangan` - Laporan kemenangan
-
-### **Stored Procedures**
-- `input_tebakan` - Input tebakan dengan validasi
-- `proses_kalkulasi_kemenangan` - Kalkulasi kemenangan
-- `topup_deposit` - Topup deposit
-- `cek_saldo_deposit` - Cek saldo deposit
-- Helper procedures untuk 4D, 3D, 2D, CE, CK, CB
-
-## 📁 **Struktur File (Optimized)**
+## 📁 **Struktur File**
 
 ```
 luna/
-├── index.html                     # Halaman login/register
-├── super_admin_dashboard.html     # Dashboard Super Admin
-├── mobile_dashboard.html          # Dashboard mobile
-├── input_tebakan_mobile.html      # Form input tebakan
-├── database_complete.sql          # Database lengkap + stored procedures
-├── security_guidelines.md         # Panduan keamanan
-├── README.md                      # Dokumentasi ini
 ├── css/
-│   └── styles.css                 # CSS utama (gabungan semua styling)
-└── js/
-    └── app.js                     # JavaScript utama (gabungan semua logic)
+│   └── styles.css          # CSS utama dengan Bootstrap integration
+├── js/
+│   └── app.js             # JavaScript utama dengan utility functions
+├── db/
+│   ├── database_optimized.sql # Database schema optimized (RECOMMENDED)
+│   ├── insert_dummy_optimized.sql # Data dummy untuk database optimized
+│   ├── sistem_angka.sql # Database schema original
+│   ├── fix_database_structure.sql # Perbaikan struktur database
+│   ├── insert_dummy_optimized.sql # Data dummy untuk testing
+│   └── DATABASE_OPTIMIZATION_GUIDE.md # Panduan optimasi database
+├── api/
+│   ├── config.php # Konfigurasi database dan helper functions
+│   ├── get_bos_statistics.php # API untuk statistik BOS
+│   ├── add_bos.php # API untuk menambah user Bos baru
+│   ├── check_telepon.php # API untuk cek nomor telepon
+│   ├── get_provinsi.php # API untuk data provinsi
+│   ├── get_kabupaten.php # API untuk data kabupaten
+│   ├── get_kecamatan.php # API untuk data kecamatan
+│   └── get_kelurahan.php # API untuk data kelurahan
+├── index.html             # Halaman login/register
+├── mobile_dashboard.html  # Dashboard mobile
+├── super_admin_dashboard.html # Dashboard Super Admin
+├── input_tebakan_mobile.html # Form input tebakan
+├── CHANGELOG.md           # Riwayat perubahan sistem
+├── security_guidelines.md # Panduan keamanan
+└── README.md              # Dokumentasi ini
 ```
 
-### **File yang Dihapus (Sudah Digabung):**
-- ❌ `stored_procedures.sql` → ✅ Digabung ke `database_complete.sql`
-- ❌ `database_procedures.sql` → ✅ Digabung ke `database_complete.sql`
-- ❌ `js/script.js` → ✅ Digabung ke `js/app.js`
-- ❌ `js/validation.js` → ✅ Digabung ke `js/app.js`
-- ❌ `css/style.css` → ✅ Digabung ke `css/styles.css`
-- ❌ `README_awal.md` → ✅ Digabung ke `README.md`
+## 👥 **Role & Permission**
 
-## 🚀 **Panduan Instalasi**
+```
+Super Admin
+├── Bos
+│   ├── Admin Bos
+│   └── Transporter
+│       └── Penjual
+│           └── Pembeli
+```
 
-### **1. Setup Database**
+### **Hak Akses:**
+- **Super Admin**: Akses penuh ke semua fitur
+- **Bos**: Manajemen server dan user di bawahnya
+- **Admin Bos**: Administrasi untuk Bos
+- **Transporter**: Pengangkut dan manajemen Penjual
+- **Penjual**: Input tebakan dan layanan Pembeli
+- **Pembeli**: Melakukan tebakan
+
+## 📊 **Dashboard Statistics**
+
+### **BOS Statistics Feature**
+- ✅ **Real-time Monitoring**: Jumlah BOS aktif dan tidak aktif
+- ✅ **Dynamic Updates**: Data ter-update secara otomatis dari database
+- ✅ **API Integration**: Menggunakan `/api/get_bos_statistics.php`
+- ✅ **Error Handling**: Fallback values jika API gagal
+- ✅ **Mobile & Desktop**: Tampilan yang konsisten di semua device
+
+### **Statistics Cards**
+1. **Total Omset**: Rp 15.2M
+2. **Total Transaksi**: 2,847
+3. **BOS (Aktif/Total)**: 4/4 (dinamis dari database)
+4. **Server Aktif**: 24
+
+## 📱 **Mobile Optimization**
+
+- **Touch-Friendly**: Button dan input yang mudah disentuh
+- **Responsive Grid**: Layout yang menyesuaikan ukuran layar
+- **Bottom Navigation**: Navigasi yang mudah di mobile
+- **Floating Action Button**: Akses cepat ke fitur utama
+
+## 👤 **Fitur Tambah User Bos**
+
+### **Form Lengkap**
+- **Informasi Pribadi**: NIK, nama lengkap, jenis kelamin, tempat/tanggal lahir, agama, status perkawinan
+- **Informasi Kontak**: Email, telepon, WhatsApp, Telegram
+- **Informasi Alamat**: Alamat lengkap, jenis alamat, RT/RW, kode pos
+- **Informasi Akun**: Username dan password
+
+### **Validasi Data**
+- Validasi format NIK (16 digit)
+- Validasi password minimal 6 karakter
+- Validasi email format
+- Pengecekan username dan NIK duplikat
+- Validasi field wajib
+
+### **Database Integration**
+- Menggunakan struktur database yang dinormalisasi
+- Insert ke tabel `orang`, `orang_identitas`, `orang_alamat`, `user`, dan `user_ownership`
+- Role otomatis diset sebagai "Bos" (role_id = 2)
+- Password di-hash menggunakan `password_hash()`
+- Transaksi database untuk memastikan data integrity
+
+## 🗄️ **Database Optimization Features**
+
+### **Stored Procedures untuk Identitas:**
 ```sql
--- Jalankan di phpMyAdmin
--- Copy-paste seluruh isi database_complete.sql
--- Centang "Perbolehkan cek foreign key"
--- Klik Go
+-- Tambah identitas baru
+CALL sp_tambah_identitas_orang(1, 'Email', 'john@example.com', TRUE);
+CALL sp_tambah_identitas_orang(1, 'Telepon', '08123456789', FALSE);
+
+-- Ambil semua identitas
+CALL sp_get_identitas_orang(1);
 ```
 
-### **2. Setup Web Server**
+### **Stored Procedures untuk Alamat:**
+```sql
+-- Tambah alamat baru
+CALL sp_tambah_alamat_orang(1, 'Rumah Tinggal', 'Jl. Sudirman No. 123', '001', '002', '10310', NULL, TRUE);
+CALL sp_tambah_alamat_orang(1, 'Tempat Kerja', 'Jl. Thamrin No. 456', '003', '004', '10350', NULL, FALSE);
+
+-- Ambil semua alamat
+CALL sp_get_alamat_orang(1);
+```
+
+### **Views untuk Data Lengkap:**
+```sql
+-- Data orang lengkap dengan identitas dan alamat
+SELECT * FROM view_orang_lengkap;
+SELECT * FROM view_orang_identitas WHERE orang_id = 1;
+SELECT * FROM view_orang_alamat WHERE orang_id = 1;
+```
+
+## 🔧 **Fitur Login yang Diperbaiki**
+
+- **Form Validation**: Validasi real-time dengan Bootstrap
+- **Password Strength**: Indikator kekuatan password
+- **Error Handling**: Pesan error yang informatif
+- **Loading States**: Indikator loading saat proses
+- **Session Management**: Manajemen session yang aman
+
+## 🎯 **Update Terbaru (v2.2)**
+
+### **BOS Statistics Dashboard**
+- ✅ **Real-time BOS Monitoring**: Card menampilkan jumlah BOS aktif/total
+- ✅ **API Integration**: `/api/get_bos_statistics.php` untuk data dinamis
+- ✅ **Error Handling**: Fallback values jika API gagal
+- ✅ **Mobile & Desktop**: Tampilan konsisten di semua device
+- ✅ **Database Query**: Query optimized untuk performa terbaik
+
+### **Dashboard Improvements**
+- ✅ **Dynamic Statistics**: Data ter-update secara otomatis
+- ✅ **Bootstrap Integration**: Styling yang konsisten
+- ✅ **JavaScript Optimization**: Error handling yang robust
+- ✅ **API Path Fix**: Path API yang benar untuk localhost
+
+### **Database Optimization**
+- ✅ **Normalisasi Database**: Master tables untuk agama, status perkawinan, jenis identitas
+- ✅ **Multiple Identitas**: Satu orang bisa punya multiple email/telepon
+- ✅ **Multiple Alamat**: Satu orang bisa punya berbagai jenis alamat (rumah, kerja, kantor, dll)
+- ✅ **Stored Procedures**: Fungsi untuk manajemen identitas dan alamat
+- ✅ **Views**: Query yang dioptimasi untuk data lengkap
+- ✅ **Index Optimization**: Performa query yang lebih baik
+
+### **Fitur Alamat Baru**
+- ✅ **Alamat Jenis**: Rumah tinggal, tempat kerja, alamat kantor, domisili, dll
+- ✅ **Alamat Terstruktur**: RT/RW, kode pos, kelurahan/desa
+- ✅ **Primary Address**: Alamat utama untuk setiap jenis
+- ✅ **Address Verification**: Status verifikasi alamat
+- ✅ **Location Integration**: Integrasi dengan data lokasi administratif
+
+### **Performance Improvements**
+- ✅ **99%+ Storage Savings**: Untuk data yang berulang
+- ✅ **Data Consistency**: Tidak ada typo atau variasi
+- ✅ **Easy Maintenance**: Ubah sekali, berlaku di semua tempat
+- ✅ **Scalability**: Mudah tambah jenis identitas dan alamat baru
+
+## 📊 **Data Dummy**
+
+Sistem dilengkapi dengan data dummy lengkap untuk database optimized:
+
+### **6 User Lengkap dengan Multiple Data:**
+- **Super Admin**: Ahmad Rizki Pratama (admin/admin123)
+- **Bos**: Bambang Sutejo (bos/bos123)
+- **Admin Bos**: Citra Dewi (adminbos/adminbos123)
+- **Transporter**: Dedi Kurniawan (transporter/transporter123)
+- **Penjual**: Eka Putri (penjual/penjual123)
+- **Pembeli**: Fitri Handayani (pembeli/pembeli123)
+
+### **Multiple Identitas per User:**
+```
+Super Admin:
+- Email: admin@luna.com (primary)
+- Telepon: 08123456789 (primary)
+- WhatsApp: 08123456789
+- Instagram: @ahmadrizki
+
+Bos:
+- Email: bos@luna.com (primary)
+- Telepon: 08187654321 (primary)
+- WhatsApp: 08187654321
+- Facebook: bambang.sutejo
+```
+
+### **Multiple Alamat per User:**
+```
+Super Admin:
+- Rumah: Jl. Sudirman No. 123, Menteng, Jakarta Pusat
+- Kantor: Jl. Thamrin No. 456, Jakarta Pusat
+
+Bos:
+- Rumah: Jl. Darmo No. 789, Surabaya
+- Kerja: Jl. Basuki Rahmat No. 321, Surabaya
+- Kantor: Jl. Pemuda No. 654, Surabaya
+```
+
+### **Server & Hadiah:**
+- **Server Jakarta Pusat**: 6 tipe tebakan (2D, 3D, 4D, Colok Bebas, Colok Macau, Colok Naga)
+- **Hadiah**: Persentase hadiah untuk setiap tipe tebakan
+- **Deposit**: Saldo deposit untuk setiap user
+- **Komisi**: Aturan komisi untuk setiap role
+
+## 🧪 **Testing & Verification**
+
+### **Test BOS Statistics API:**
 ```bash
-# Pastikan XAMPP/WAMP sudah running
-# Copy semua file ke folder htdocs
-# Akses via browser: http://localhost/luna/
-```
+# Test API langsung
+curl http://localhost/luna/api/get_bos_statistics.php
 
-## 🔧 **Teknologi yang Digunakan**
-
-### **Frontend**
-- **HTML5** - Semantic markup
-- **CSS3** - Modern styling dengan CSS Grid & Flexbox
-- **Bootstrap 5** - Responsive framework
-- **JavaScript ES6+** - Modern JavaScript
-- **jQuery** - DOM manipulation dan AJAX
-- **Font Awesome** - Icon library
-
-### **Backend**
-- **PHP** - Server-side scripting
-- **MySQL/MariaDB** - Database management
-- **Apache** - Web server
-
-### **Security**
-- **HTTPS** - Secure communication
-- **Password Hashing** - bcrypt/Argon2
-- **Session Management** - Secure session handling
-- **Input Validation** - Client & server-side validation
-
-## 📊 **Data Format**
-
-### **Tebakan JSON Format**
-```json
+# Expected response:
 {
-  "4D": [
-    {"angka": "1234", "jumlah": 1},
-    {"angka": "5678", "jumlah": 2}
-  ],
-  "3D": [
-    {"angka": "123", "jumlah": 1}
-  ],
-  "2D": [
-    {"angka": "12", "jumlah": 1}
-  ],
-  "CE": [
-    {"angka": "1", "jumlah": 1}
-  ],
-  "CK": [
-    {"angka": "2", "jumlah": 1}
-  ],
-  "CB": [
-    {"angka": "3", "jumlah": 1}
-  ]
+  "success": true,
+  "data": {
+    "total_bos": 4,
+    "bos_aktif": 4,
+    "bos_tidak_aktif": 0
+  },
+  "message": "BOS statistics retrieved successfully"
 }
 ```
 
-### **Hasil Tebakan JSON Format**
-```json
-{
-  "4D": "1234",
-  "3D": "234",
-  "2D": "34",
-  "CE": "4",
-  "CK": "5",
-  "CB": "6"
-}
+### **Manual Testing:**
+```sql
+-- Cek data BOS
+SELECT 
+    COUNT(*) as total_bos,
+    SUM(CASE WHEN u.is_active = 1 THEN 1 ELSE 0 END) as bos_aktif,
+    SUM(CASE WHEN u.is_active = 0 THEN 1 ELSE 0 END) as bos_tidak_aktif
+FROM user u
+WHERE u.role_id = 2;
+
+-- Cek data master
+SELECT * FROM master_agama;
+SELECT * FROM master_status_perkawinan;
+SELECT * FROM alamat_jenis;
+
+-- Cek data orang dengan identitas
+SELECT * FROM view_orang_lengkap;
+
+-- Cek data alamat
+SELECT * FROM view_orang_alamat WHERE orang_id = 1;
 ```
 
-## 👥 **User Hierarchy & Permissions**
+## 📞 **Support**
 
-### **Super Admin**
-- Akses penuh ke semua fitur
-- Manajemen user dan role
-- Konfigurasi sistem
-- Backup dan restore
+Jika mengalami masalah:
+1. Pastikan XAMPP berjalan dengan benar
+2. Cek koneksi database
+3. Jalankan script `db/insert_dummy_optimized.sql`
+4. Test BOS statistics API: `http://localhost/luna/api/get_bos_statistics.php`
+5. Gunakan kredensial demo untuk testing
 
-### **Bos**
-- Manajemen server dan sesi
-- View laporan keuangan
-- Manajemen user di bawahnya
-- Konfigurasi hadiah
+## 🔄 **Versi**
 
-### **Admin Bos**
-- View laporan
-- Manajemen user di bawahnya
-- Monitoring transaksi
-
-### **Transporter**
-- View transaksi
-- Update status transaksi
-- Manajemen penjual
-
-### **Penjual**
-- Input tebakan
-- View saldo dan komisi
-- Riwayat transaksi
-
-### **Pembeli**
-- Input tebakan
-- View riwayat
-- Cek saldo deposit
-
-## 💰 **Sistem Keuangan**
-
-### **Deposit System**
-- Topup deposit via berbagai metode
-- Transfer antar user
-- Riwayat transaksi lengkap
-- Notifikasi real-time
-
-### **Commission System**
-- Komisi otomatis berdasarkan role
-- Perhitungan real-time
-- Laporan komisi detail
-- Payout management
-
-### **Financial Reports**
-- Arus kas harian/bulanan
-- Laporan penyerahan dana
-- Analisis profitabilitas
-- Export ke Excel/PDF
-
-## 🔍 **Monitoring & Analytics**
-
-### **Error Tracking**
-- Log error otomatis
-- Error notification
-- Performance monitoring
-- User behavior tracking
-
-### **User Analytics**
-- User activity tracking
-- Feature usage analytics
-- Performance metrics
-- Conversion tracking
-
-## 🔄 **Backup & Recovery**
-
-### **Automated Backup**
-- Daily database backup
-- File backup otomatis
-- Cloud backup integration
-- 30-day retention policy
-
-### **Disaster Recovery**
-- Automated recovery procedures
-- Data integrity checks
-- Rollback capabilities
-- Business continuity plan
-
-## 📋 **Compliance & Legal**
-
-### **Data Privacy**
-- GDPR compliance
-- Data encryption
-- User consent management
-- Data retention policies
-
-### **Audit Requirements**
-- Complete audit trail
-- Financial audit support
-- Compliance reporting
-- Legal documentation
-
-## 🎯 **Roadmap Development**
-
-### **Phase 1: Core Features** ✅
-- [x] Database structure
-- [x] Basic authentication
-- [x] Mobile dashboard
-- [x] Input tebakan form
-- [x] Basic security
-- [x] File optimization
-
-### **Phase 2: Advanced Features** 🚧
-- [ ] Multi-factor authentication
-- [ ] Advanced reporting
-- [ ] Real-time notifications
-- [ ] API integration
-- [ ] Performance optimization
-
-### **Phase 3: Enterprise Features** 📋
-- [ ] Advanced analytics
-- [ ] Multi-tenant support
-- [ ] Advanced security
-- [ ] Compliance features
-- [ ] Mobile app development
-
-### **Phase 4: Scale & Optimize** 📋
-- [ ] Microservices architecture
-- [ ] Cloud deployment
-- [ ] Advanced monitoring
-- [ ] AI/ML integration
-- [ ] Internationalization
-
-## 🤝 **Support & Maintenance**
-
-### **Technical Support**
-- Documentation updates
-- Bug fixes
-- Feature requests
-- Performance optimization
-
-### **Training & Onboarding**
-- User training materials
-- Admin documentation
-- Video tutorials
-- Best practices guide
+- **v2.2**: BOS Statistics Dashboard
+  - Real-time BOS monitoring
+  - API integration untuk statistik dinamis
+  - Error handling dan fallback values
+  - Mobile & desktop optimization
+  - Database query optimization
+- **v2.1**: Database Optimization & Multiple Addresses
+  - Normalisasi database dengan master tables
+  - Multiple identitas dan alamat
+  - Stored procedures dan views
+  - Performance improvements
+  - Test scripts untuk verifikasi
+- **v2.0**: Perbaikan CSS & Bootstrap Integration
+- **v1.1**: Data Dummy & Database
+- **v1.0**: Initial Release
 
 ---
 
-## 📞 **Kontak & Support**
-
-**Email:** support@luna-system.com  
-**Documentation:** https://docs.luna-system.com  
-**GitHub:** https://github.com/luna-system  
-
----
-
-**Luna System - Mobile-First Tebakan Angka Platform** 🌙✨
+**Luna System** - Modern Betting Management System 🌙✨

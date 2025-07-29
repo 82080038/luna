@@ -103,6 +103,13 @@ const LunaUtils = {
         window.location.href = page;
     },
 
+    // Logout function
+    logout: function() {
+        this.clearCurrentUser();
+        localStorage.removeItem('luna_token');
+        this.redirect('index.html');
+    },
+
     // API call helper
     apiCall: async function(url, options = {}) {
         const defaultOptions = {
@@ -113,7 +120,13 @@ const LunaUtils = {
         };
 
         try {
-            const response = await fetch(url, { ...defaultOptions, ...options });
+            // Ensure URL has correct path for localhost
+            let fullUrl = url;
+            if (!url.startsWith('http')) {
+                fullUrl = url.startsWith('/') ? `/luna${url}` : `/luna/${url}`;
+            }
+            
+            const response = await fetch(fullUrl, { ...defaultOptions, ...options });
             const data = await response.json();
             
             if (!response.ok) {
@@ -447,10 +460,11 @@ const LunaDashboard = {
     loadDashboard: async function() {
         try {
             const user = LunaUtils.getCurrentUser();
-            if (!user) return;
 
-            // Load user info
-            this.updateUserInfo(user);
+            // Load user info if user exists
+            if (user) {
+                this.updateUserInfo(user);
+            }
 
             // Load statistics
             await this.loadStatistics();
@@ -483,16 +497,51 @@ const LunaDashboard = {
     // Load statistics
     loadStatistics: async function() {
         try {
-            const stats = await LunaUtils.apiCall('/api/dashboard/statistics');
+            // Load BOS statistics
+            const bosStats = await LunaUtils.apiCall('/api/get_bos_statistics.php');
             
-            // Update stat cards
-            document.getElementById('omset-hari-ini').textContent = LunaUtils.formatCurrency(stats.omset_hari_ini);
-            document.getElementById('total-transaksi').textContent = stats.total_transaksi;
-            document.getElementById('komisi').textContent = LunaUtils.formatCurrency(stats.komisi);
-            document.getElementById('target').textContent = stats.target + '%';
+            if (bosStats.success) {
+                // Update BOS stat cards
+                const bosAktifEl = document.getElementById('bos-aktif');
+                const bosTotalEl = document.getElementById('bos-total');
+                
+                if (bosAktifEl) bosAktifEl.textContent = bosStats.data.bos_aktif;
+                if (bosTotalEl) bosTotalEl.textContent = bosStats.data.total_bos;
+                
+                console.log('BOS Statistics loaded:', bosStats.data);
+            } else {
+                console.error('Failed to load BOS statistics:', bosStats.message);
+            }
+            
+            // Load other statistics (if API exists)
+            try {
+                const stats = await LunaUtils.apiCall('/api/dashboard/statistics');
+                
+                // Update stat cards
+                if (document.getElementById('omset-hari-ini')) {
+                    document.getElementById('omset-hari-ini').textContent = LunaUtils.formatCurrency(stats.omset_hari_ini);
+                }
+                if (document.getElementById('total-transaksi')) {
+                    document.getElementById('total-transaksi').textContent = stats.total_transaksi;
+                }
+                if (document.getElementById('komisi')) {
+                    document.getElementById('komisi').textContent = LunaUtils.formatCurrency(stats.komisi);
+                }
+                if (document.getElementById('target')) {
+                    document.getElementById('target').textContent = stats.target + '%';
+                }
+            } catch (statsError) {
+                console.log('Dashboard statistics API not available, using default values');
+            }
             
         } catch (error) {
             console.error('Error loading statistics:', error);
+            // Set default values if API fails
+            const bosAktifEl = document.getElementById('bos-aktif');
+            const bosTotalEl = document.getElementById('bos-total');
+            
+            if (bosAktifEl) bosAktifEl.textContent = '0';
+            if (bosTotalEl) bosTotalEl.textContent = '0';
         }
     },
 
@@ -737,9 +786,8 @@ document.addEventListener('DOMContentLoaded', function() {
             
         case 'mobile_dashboard.html':
             // Dashboard page
-            if (LunaAuth.checkAuth()) {
-                LunaDashboard.loadDashboard();
-            }
+            console.log('Mobile dashboard page detected');
+            LunaDashboard.loadDashboard();
             break;
             
         case 'input_tebakan_mobile.html':
