@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luna - Login & Register</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <style>
+        /* Auth specific styles */
+        .auth-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 0;
+        }
+
+        .auth-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .auth-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .auth-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        }
+
+        .auth-header h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .auth-header p {
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .auth-body {
+            padding: 2rem;
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            background: var(--gray-100);
+            padding: 0.25rem;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: var(--gray-600);
+        }
+
+        .auth-tab.active {
+            background: white;
+            color: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-control.error {
+            border-color: var(--danger-color);
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group .form-control {
+            padding-right: 3rem;
+        }
+
+        .input-group-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-500);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .input-group-icon:hover {
+            color: var(--primary-color);
+        }
+
+        .btn {
+            border-radius: 12px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--gray-200);
+            color: var(--dark-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-300);
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .password-strength {
+            margin-top: 0.5rem;
+        }
+
+        .strength-bar {
+            height: 4px;
+            background: var(--gray-200);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .strength-fill {
+            height: 100%;
+            transition: all 0.3s ease;
+            width: 0%;
+        }
+
+        .strength-weak { background: var(--danger-color); width: 25%; }
+        .strength-fair { background: var(--warning-color); width: 50%; }
+        .strength-good { background: #f59e0b; width: 75%; }
+        .strength-strong { background: var(--success-color); width: 100%; }
+
+        .error-message {
+            color: var(--danger-color);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .success-message {
+            color: var(--success-color);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 576px) {
+            .auth-container {
+                padding: 0.5rem;
+            }
+            
+            .auth-card {
+                border-radius: 16px;
+            }
+            
+            .auth-header {
+                padding: 1.5rem;
+            }
+            
+            .auth-body {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+                    <div class="auth-card">
+                        <!-- Header -->
+                        <div class="auth-header">
+                            <h1>🌙 Luna</h1>
+                            <p>Sistem Tebakan Angka</p>
+                        </div>
+
+                        <!-- Body -->
+                        <div class="auth-body">
+                            <!-- Tabs -->
+                            <div class="auth-tabs">
+                                <div class="auth-tab active" onclick="switchTab('login')">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                                </div>
+                                <div class="auth-tab" onclick="switchTab('register')">
+                                    <i class="fas fa-user-plus me-2"></i>Register
+                                </div>
+                            </div>
+
+                            <!-- Login Form -->
+                            <form class="auth-form active" id="login-form">
+                                <div class="form-group">
+                                    <label class="form-label">Username</label>
+                                    <input type="text" class="form-control" id="login-username" placeholder="Masukkan username" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Password</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="login-password" placeholder="Masukkan password" required>
+                                        <i class="fas fa-eye input-group-icon" onclick="togglePassword('login-password')"></i>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary w-100" id="login-btn">
+                                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                                    </button>
+                                </div>
+                                <div class="text-center">
+                                    <a href="#" onclick="switchTab('forgot')" class="text-decoration-none">Lupa password?</a>
+                                </div>
+                            </form>
+
+                            <!-- Register Form -->
+                            <form class="auth-form" id="register-form">
+                                <div class="form-group">
+                                    <label class="form-label">Nama Lengkap</label>
+                                    <input type="text" class="form-control" id="register-name" placeholder="Masukkan nama lengkap" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Username</label>
+                                    <input type="text" class="form-control" id="register-username" placeholder="Masukkan username" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="register-email" placeholder="Masukkan email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Password</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="register-password" placeholder="Masukkan password" required>
+                                        <i class="fas fa-eye input-group-icon" onclick="togglePassword('register-password')"></i>
+                                    </div>
+                                    <div class="password-strength">
+                                        <div class="strength-bar">
+                                            <div class="strength-fill" id="password-strength"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Konfirmasi Password</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="register-confirm-password" placeholder="Konfirmasi password" required>
+                                        <i class="fas fa-eye input-group-icon" onclick="togglePassword('register-confirm-password')"></i>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-success w-100" id="register-btn">
+                                        <i class="fas fa-user-plus me-2"></i>Register
+                                    </button>
+                                </div>
+                            </form>
+
+                            <!-- Forgot Password Form -->
+                            <form class="auth-form" id="forgot-form">
+                                <div class="form-group">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="forgot-email" placeholder="Masukkan email" required>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary w-100" id="forgot-btn">
+                                        <i class="fas fa-paper-plane me-2"></i>Kirim Reset Link
+                                    </button>
+                                </div>
+                                <div class="text-center">
+                                    <a href="#" onclick="switchTab('login')" class="text-decoration-none">Kembali ke login</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        function switchTab(tab) {
+            // Hide all forms
+            document.querySelectorAll('.auth-form').forEach(form => {
+                form.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.auth-tab').forEach(tabEl => {
+                tabEl.classList.remove('active');
+            });
+            
+            // Show selected form
+            if (tab === 'login') {
+                document.getElementById('login-form').classList.add('active');
+                document.querySelector('.auth-tab:first-child').classList.add('active');
+            } else if (tab === 'register') {
+                document.getElementById('register-form').classList.add('active');
+                document.querySelector('.auth-tab:last-child').classList.add('active');
+            } else if (tab === 'forgot') {
+                document.getElementById('forgot-form').classList.add('active');
+                // Hide tabs for forgot password
+                document.querySelector('.auth-tabs').style.display = 'none';
+            }
+        }
+
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = input.nextElementSibling;
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fas fa-eye-slash input-group-icon';
+            } else {
+                input.type = 'password';
+                icon.className = 'fas fa-eye input-group-icon';
+            }
+        }
+
+        // Password strength checker
+        document.getElementById('register-password').addEventListener('input', function() {
+            const password = this.value;
+            const strengthBar = document.getElementById('password-strength');
+            
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            
+            strengthBar.className = 'strength-fill';
+            if (strength <= 1) strengthBar.classList.add('strength-weak');
+            else if (strength <= 2) strengthBar.classList.add('strength-fair');
+            else if (strength <= 3) strengthBar.classList.add('strength-good');
+            else strengthBar.classList.add('strength-strong');
+        });
+
+        // Form submissions
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            
+            if (!username || !password) {
+                showError('Username dan password harus diisi');
+                return;
+            }
+            
+            // Show loading
+            const btn = document.getElementById('login-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Loading...';
+            btn.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Demo login - replace with actual API call
+                if (username === 'admin' && password === 'admin123') {
+                    // Set user data for Super Admin
+                    const userData = {
+                        id: 1,
+                        username: 'admin',
+                        role: 'Super Admin',
+                        nama_lengkap: 'Super Administrator',
+                        email: 'admin@luna.com'
+                    };
+                    LunaUtils.setCurrentUser(userData);
+                    
+                    showSuccess('Login berhasil! Redirecting...');
+                    setTimeout(() => {
+                        window.location.href = 'super_admin_dashboard.html';
+                    }, 1500);
+                } else {
+                    showError('Username atau password salah');
+                }
+                
+                // Reset button
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }, 2000);
+        });
+
+        document.getElementById('register-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('register-name').value;
+            const username = document.getElementById('register-username').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm-password').value;
+            
+            if (!name || !username || !email || !password || !confirmPassword) {
+                showError('Semua field harus diisi');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showError('Password tidak cocok');
+                return;
+            }
+            
+            if (password.length < 8) {
+                showError('Password minimal 8 karakter');
+                return;
+            }
+            
+            // Show loading
+            const btn = document.getElementById('register-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Loading...';
+            btn.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                showSuccess('Register berhasil! Silakan login.');
+                switchTab('login');
+                
+                // Reset button
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }, 2000);
+        });
+
+        document.getElementById('forgot-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('forgot-email').value;
+            
+            if (!email) {
+                showError('Email harus diisi');
+                return;
+            }
+            
+            // Show loading
+            const btn = document.getElementById('forgot-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Loading...';
+            btn.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                showSuccess('Reset link telah dikirim ke email Anda');
+                
+                // Reset button
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }, 2000);
+        });
+
+        function showError(message) {
+            // Remove existing messages
+            document.querySelectorAll('.error-message, .success-message').forEach(msg => msg.remove());
+            
+            // Add error message
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = message;
+            
+            const activeForm = document.querySelector('.auth-form.active');
+            activeForm.appendChild(errorDiv);
+        }
+
+        function showSuccess(message) {
+            // Remove existing messages
+            document.querySelectorAll('.error-message, .success-message').forEach(msg => msg.remove());
+            
+            // Add success message
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success-message';
+            successDiv.textContent = message;
+            
+            const activeForm = document.querySelector('.auth-form.active');
+            activeForm.appendChild(successDiv);
+        }
+    </script>
+</body>
+</html>
