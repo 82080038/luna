@@ -76,21 +76,78 @@ const LunaUtils = {
         }
     },
 
-    // Get current user
+    // Get current user with validation
     getCurrentUser: function() {
-        return JSON.parse(localStorage.getItem('luna_user')) || null;
+        try {
+            const userStr = localStorage.getItem('luna_user');
+            if (!userStr) return null;
+            
+            const user = JSON.parse(userStr);
+            
+            // Validate user object structure
+            if (!user || typeof user !== 'object' || !user.id || !user.username || !user.role) {
+                this.clearCurrentUser();
+                return null;
+            }
+            
+            // Check session expiration
+            if (user.expires && new Date(user.expires) < new Date()) {
+                this.clearCurrentUser();
+                return null;
+            }
+            
+            return user;
+        } catch (e) {
+            console.error('Error parsing user data:', e);
+            this.clearCurrentUser();
+            return null;
+        }
     },
 
-    // Set current user
+    // Set current user with expiration
     setCurrentUser: function(user) {
-        localStorage.setItem('luna_user', JSON.stringify(user));
-        currentUser = user;
+        try {
+            // Add session expiration (4 hours from now)
+            user.expires = new Date(Date.now() + 4 * 60 * 60 * 1000).toISOString();
+            user.loginTime = new Date().toISOString();
+            
+            // Sanitize user data before storing
+            const sanitizedUser = {
+                id: this.sanitizeString(user.id),
+                username: this.sanitizeString(user.username),
+                role: this.sanitizeString(user.role),
+                name: this.sanitizeString(user.name || ''),
+                expires: user.expires,
+                loginTime: user.loginTime
+            };
+            
+            localStorage.setItem('luna_user', JSON.stringify(sanitizedUser));
+            currentUser = sanitizedUser;
+        } catch (e) {
+            console.error('Error setting user data:', e);
+        }
     },
 
     // Clear current user
     clearCurrentUser: function() {
         localStorage.removeItem('luna_user');
+        localStorage.removeItem('luna_session');
         currentUser = null;
+    },
+
+    // Sanitize string input
+    sanitizeString: function(str) {
+        if (typeof str !== 'string') return '';
+        return str.replace(/[<>'"&]/g, function(match) {
+            const map = {
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;',
+                '&': '&amp;'
+            };
+            return map[match];
+        });
     },
 
     // Check if user is logged in
