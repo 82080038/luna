@@ -197,7 +197,7 @@
         });
 
         // Form submissions
-        document.getElementById('login-form').addEventListener('submit', function(e) {
+        document.getElementById('login-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const username = document.getElementById('login-username').value;
@@ -214,32 +214,52 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Loading...';
             btn.disabled = true;
             
-            // Simulate API call
-            setTimeout(() => {
-                // Demo login - replace with actual API call
-                if (username === 'admin' && password === 'admin123') {
-                    // Set user data for Super Admin
+            try {
+                // Actual API call to login.php
+                const response = await fetch('/api/login.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Set user data
                     const userData = {
-                        id: 1,
-                        username: 'admin',
-                        role: 'Super Admin',
-                        nama_lengkap: 'Super Administrator',
-                        email: 'admin@luna.com'
+                        id: result.data.id,
+                        username: result.data.username,
+                        role: result.data.role,
+                        name: result.data.name,
+                        last_login: result.data.last_login,
+                        session_token: result.data.session_token
                     };
+                    
+                    // Store user data using LunaUtils
                     LunaUtils.setCurrentUser(userData);
+                    localStorage.setItem('luna_token', result.data.session_token);
                     
                     showSuccess('Login berhasil! Redirecting...');
+                    
+                    // Redirect based on user role
                     setTimeout(() => {
-                        window.location.href = 'super_admin_dashboard.html';
+                        LunaAuth.redirectBasedOnRole(result.data.role);
                     }, 1500);
+                    
                 } else {
-                    showError('Username atau password salah');
+                    showError(result.error || 'Login gagal');
                 }
                 
+            } catch (error) {
+                console.error('Login error:', error);
+                showError('Terjadi kesalahan saat login. Silakan coba lagi.');
+            } finally {
                 // Reset button
                 btn.innerHTML = originalText;
                 btn.disabled = false;
-            }, 2000);
+            }
         });
 
         document.getElementById('register-form').addEventListener('submit', function(e) {

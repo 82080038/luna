@@ -318,6 +318,32 @@
             return data;
         }
 
+        // Check authentication and role access
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in and has appropriate role for input tebakan
+            if (!LunaAuth.checkRoleAccess(['Admin Bos', 'Transporter', 'Penjual'])) {
+                return;
+            }
+            
+            // Initialize input tebakan page
+            initInputTebakan();
+        });
+        
+        // Initialize input tebakan page
+        function initInputTebakan() {
+            const currentUser = LunaUtils.getCurrentUser();
+            if (currentUser) {
+                // Update user info
+                document.getElementById('user-name').textContent = currentUser.name || currentUser.username;
+                document.getElementById('user-role').textContent = currentUser.role;
+            }
+            
+            // Initialize tebakan functionality
+            if (typeof LunaTebakan !== 'undefined') {
+                LunaTebakan.init();
+            }
+        }
+
         // Initialize form
         document.addEventListener('DOMContentLoaded', function() {
             // Add input event listeners

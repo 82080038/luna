@@ -433,24 +433,28 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/app.js"></script>
     <script>
-        // Check if user is logged in
-        function checkAuth() {
-            const user = LunaUtils.getCurrentUser();
-            if (!user) {
-                window.location.href = 'index.html';
+        // Check authentication and role access
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in and has Super Admin role
+            if (!LunaAuth.checkRoleAccess(['Super Admin'])) {
                 return;
             }
             
-            // Check if user is Super Admin
-            if (user.role !== 'Super Admin') {
-                alert('Anda tidak memiliki akses ke halaman ini!');
-                window.location.href = 'mobile_dashboard.html';
-                return;
+            // Initialize super admin dashboard
+            initSuperAdminDashboard();
+        });
+        
+        // Initialize super admin dashboard
+        function initSuperAdminDashboard() {
+            const currentUser = LunaUtils.getCurrentUser();
+            if (currentUser) {
+                // Update user info
+                document.getElementById('user-name').textContent = currentUser.name || currentUser.username;
+                document.getElementById('user-role').textContent = currentUser.role;
             }
             
-            // Update user info
-            document.querySelector('.user-details h6').textContent = user.nama_lengkap || user.username;
-            document.querySelector('.user-details small').textContent = user.role;
+            // Load dashboard data
+            loadSuperAdminData();
         }
 
         // Logout function
@@ -671,6 +675,10 @@
         function loadProvinsi() {
             const provinsiSelect = document.getElementById('provinsi_id');
             
+            // Show loading state
+            provinsiSelect.innerHTML = '<option value="">Memuat provinsi...</option>';
+            provinsiSelect.disabled = true;
+            
             fetch('api/get_provinsi.php')
                 .then(response => {
                     if (!response.ok) {
@@ -679,23 +687,32 @@
                     return response.json();
                 })
                 .then(result => {
-                    if (result.success) {
+                    if (result.success && result.data && result.data.length > 0) {
+                        // Clear loading state
+                        provinsiSelect.innerHTML = '<option value="">Pilih Provinsi</option>';
+                        
                         result.data.forEach(provinsi => {
                             const option = document.createElement('option');
                             option.value = provinsi.id;
                             option.textContent = provinsi.nama;
                             provinsiSelect.appendChild(option);
                         });
+                        
+                        provinsiSelect.disabled = false;
                     } else {
-                        console.error('Error loading provinces:', result.error);
+                        throw new Error('No province data available');
                     }
                 })
                 .catch(error => {
                     console.error('Error loading provinces:', error);
-                    // Show user-friendly error message
+                    
+                    provinsiSelect.innerHTML = '<option value="">Error: Tidak dapat memuat data provinsi</option>';
+                    provinsiSelect.disabled = true;
+                    
+                    // Show error message
                     const errorDiv = document.createElement('div');
                     errorDiv.className = 'alert alert-danger mt-2';
-                    errorDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Gagal memuat data provinsi. Silakan refresh halaman.';
+                    errorDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Gagal memuat data provinsi dari database. Silakan periksa koneksi database sistem_alamat.';
                     provinsiSelect.parentNode.appendChild(errorDiv);
                 });
         }
@@ -703,6 +720,10 @@
         function loadKabupatenKota(provinsiId) {
             const kabupatenSelect = document.getElementById('kabupaten_kota_id');
             resetDropdown(kabupatenSelect);
+            
+            // Show loading state
+            kabupatenSelect.innerHTML = '<option value="">Memuat kabupaten...</option>';
+            kabupatenSelect.disabled = true;
             
             fetch(`api/get_kabupaten.php?provinsi_id=${provinsiId}`)
                 .then(response => {
@@ -712,26 +733,42 @@
                     return response.json();
                 })
                 .then(result => {
-                    if (result.success) {
+                    if (result.success && result.data && result.data.length > 0) {
+                        kabupatenSelect.innerHTML = '<option value="">Pilih Kabupaten/Kota</option>';
+                        
                         result.data.forEach(kabupaten => {
                             const option = document.createElement('option');
                             option.value = kabupaten.id;
                             option.textContent = kabupaten.nama;
                             kabupatenSelect.appendChild(option);
                         });
+                        
                         kabupatenSelect.disabled = false;
                     } else {
-                        console.error('Error loading kabupaten:', result.error);
+                        throw new Error('No kabupaten data available');
                     }
                 })
                 .catch(error => {
                     console.error('Error loading kabupaten:', error);
+                    
+                    kabupatenSelect.innerHTML = '<option value="">Error: Tidak dapat memuat data kabupaten</option>';
+                    kabupatenSelect.disabled = true;
+                    
+                    // Show error message
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'alert alert-danger mt-2';
+                    errorDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Gagal memuat data kabupaten dari database. Silakan periksa koneksi database sistem_alamat.';
+                    kabupatenSelect.parentNode.appendChild(errorDiv);
                 });
         }
 
         function loadKecamatan(kabupatenId) {
             const kecamatanSelect = document.getElementById('kecamatan_id');
             resetDropdown(kecamatanSelect);
+            
+            // Show loading state
+            kecamatanSelect.innerHTML = '<option value="">Memuat kecamatan...</option>';
+            kecamatanSelect.disabled = true;
             
             fetch(`api/get_kecamatan.php?kabupaten_kota_id=${kabupatenId}`)
                 .then(response => {
@@ -741,26 +778,42 @@
                     return response.json();
                 })
                 .then(result => {
-                    if (result.success) {
+                    if (result.success && result.data && result.data.length > 0) {
+                        kecamatanSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+                        
                         result.data.forEach(kecamatan => {
                             const option = document.createElement('option');
                             option.value = kecamatan.id;
                             option.textContent = kecamatan.nama;
                             kecamatanSelect.appendChild(option);
                         });
+                        
                         kecamatanSelect.disabled = false;
                     } else {
-                        console.error('Error loading kecamatan:', result.error);
+                        throw new Error('No kecamatan data available');
                     }
                 })
                 .catch(error => {
                     console.error('Error loading kecamatan:', error);
+                    
+                    kecamatanSelect.innerHTML = '<option value="">Error: Tidak dapat memuat data kecamatan</option>';
+                    kecamatanSelect.disabled = true;
+                    
+                    // Show error message
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'alert alert-danger mt-2';
+                    errorDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Gagal memuat data kecamatan dari database. Silakan periksa koneksi database sistem_alamat.';
+                    kecamatanSelect.parentNode.appendChild(errorDiv);
                 });
         }
 
         function loadKelurahanDesa(kecamatanId) {
             const kelurahanSelect = document.getElementById('kelurahan_desa_id');
             resetDropdown(kelurahanSelect);
+            
+            // Show loading state
+            kelurahanSelect.innerHTML = '<option value="">Memuat kelurahan...</option>';
+            kelurahanSelect.disabled = true;
             
             fetch(`api/get_kelurahan.php?kecamatan_id=${kecamatanId}`)
                 .then(response => {
@@ -770,20 +823,32 @@
                     return response.json();
                 })
                 .then(result => {
-                    if (result.success) {
+                    if (result.success && result.data && result.data.length > 0) {
+                        kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan/Desa</option>';
+                        
                         result.data.forEach(kelurahan => {
                             const option = document.createElement('option');
                             option.value = kelurahan.id;
                             option.textContent = kelurahan.nama;
                             kelurahanSelect.appendChild(option);
                         });
+                        
                         kelurahanSelect.disabled = false;
                     } else {
-                        console.error('Error loading kelurahan:', result.error);
+                        throw new Error('No kelurahan data available');
                     }
                 })
                 .catch(error => {
                     console.error('Error loading kelurahan:', error);
+                    
+                    kelurahanSelect.innerHTML = '<option value="">Error: Tidak dapat memuat data kelurahan</option>';
+                    kelurahanSelect.disabled = true;
+                    
+                    // Show error message
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'alert alert-danger mt-2';
+                    errorDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Gagal memuat data kelurahan dari database. Silakan periksa koneksi database sistem_alamat.';
+                    kelurahanSelect.parentNode.appendChild(errorDiv);
                 });
         }
 
@@ -992,6 +1057,8 @@
             phoneStatusDiv.className = 'form-text mt-2 text-success';
         }
         
+
+
         // Ensure dashboard loads when page is ready
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Super Admin Dashboard loaded, calling LunaDashboard.loadDashboard()');

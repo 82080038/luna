@@ -711,7 +711,77 @@ free -m
 
 ---
 
+## 🗄️ **DATABASE CLEANUP & MIGRATION**
+
+### **Multi-Database Architecture**
+Luna System sekarang menggunakan dua database terpisah:
+- **sistem_angka**: Database utama aplikasi (user, transaksi, bisnis logic)
+- **sistem_alamat**: Database khusus untuk data geografis Indonesia (sudah ada, tidak dimodifikasi)
+
+### **Recent Changes (Database Cleanup)**
+**PENTING**: Tabel geografis telah dihapus dari `sistem_angka` dan diganti dengan referensi ke `sistem_alamat`:
+
+#### **Tabel yang Dihapus dari sistem_angka:**
+- `negara`
+- `provinsi` 
+- `kabupaten_kota`
+- `kecamatan`
+- `kelurahan_desa`
+
+#### **Modifikasi Tabel orang_alamat:**
+Tabel `orang_alamat` sekarang menyimpan ID referensi ke `sistem_alamat`:
+- `negara_id` → `cbo_negara.id_negara`
+- `provinsi_id` → `cbo_propinsi.id_propinsi`
+- `kabupaten_kota_id` → `cbo_kab_kota.id_kab_kota`
+- `kecamatan_id` → `cbo_kecamatan.id_kecamatan`
+- `desa_id` → `cbo_desa.id_desa`
+
+### **New API Endpoints**
+- `api/get_negara.php` - Get country data from sistem_alamat
+- `api/get_alamat_lengkap.php` - Get complete address with geographic data
+- `api/save_alamat.php` - Save address with geographic references
+
+### **Updated API Endpoints**
+- `api/get_provinsi.php` - Now uses `cbo_propinsi` table
+- `api/get_kabupaten.php` - Now uses `cbo_kab_kota` table
+- `api/get_kecamatan.php` - Now uses `cbo_kecamatan` table
+- `api/get_kelurahan.php` - Now uses `cbo_desa` table
+
+### **Database Cleanup Scripts**
+- `db/cleanup_geographic_tables.sql` - SQL script untuk cleanup
+- `cleanup_database.bat` - Windows batch script untuk menjalankan cleanup
+
+### **Setup Instructions**
+```bash
+# 1. Backup database terlebih dahulu
+mysqldump -u root sistem_angka > backup_sistem_angka.sql
+
+# 2. Jalankan cleanup script
+cleanup_database.bat
+
+# 3. Verifikasi perubahan
+mysql -u root -e "USE sistem_angka; SHOW TABLES;"
+```
+
+### **Benefits of Multi-Database Architecture**
+- ✅ **Data Separation**: Geographic data terpisah dari business logic
+- ✅ **Maintenance**: Mudah update data geografis tanpa mempengaruhi aplikasi
+- ✅ **Performance**: Query yang lebih efisien dengan referensi ID
+- ✅ **Scalability**: Database dapat di-scale secara terpisah
+- ✅ **Backup Strategy**: Backup geografis dan bisnis data terpisah
+
+---
+
 ## 🔄 **VERSI & CHANGELOG**
+
+- **v2.4**: Multi-Database Architecture & Geographic Data Cleanup
+  - ✅ Implementasi multi-database (sistem_angka + sistem_alamat)
+  - ✅ Cleanup tabel geografis dari sistem_angka
+  - ✅ Modifikasi tabel orang_alamat untuk referensi cross-database
+  - ✅ API endpoints baru untuk cross-database operations
+  - ✅ Update semua API geografis untuk menggunakan sistem_alamat
+  - ✅ Database cleanup scripts dan automation
+  - ✅ Comprehensive documentation update
 
 - **v2.3**: Security & Performance Enhancements
   - ✅ Comprehensive security audit dan fixes
@@ -771,7 +841,7 @@ free -m
 
 ---
 
-**Luna System v2.3** - Secure, Modern, Production-Ready Betting Management System 🌙✨🔐
+**Luna System v2.4** - Multi-Database, Secure, Modern, Production-Ready Betting Management System 🌙✨🔐
 
 *Last Updated: December 2024*
 *Security Audit Completed: ✅*

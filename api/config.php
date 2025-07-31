@@ -1,18 +1,21 @@
 <?php
-// Database configuration
+// Database configuration for sistem_angka (main application database)
 $host = $_ENV['DB_HOST'] ?? 'localhost';
-$dbname = $_ENV['DB_NAME'] ?? 'sistem_angka';
+$dbname_angka = $_ENV['DB_NAME_ANGKA'] ?? 'sistem_angka';
 $username = $_ENV['DB_USER'] ?? 'root';
 $password = $_ENV['DB_PASS'] ?? '';
+
+// Database configuration for sistem_alamat (geographical data database)
+$dbname_alamat = $_ENV['DB_NAME_ALAMAT'] ?? 'sistem_alamat';
 
 // Security: Ensure database password is set in production
 if (empty($password) && (isset($_ENV['APP_ENV']) && $_ENV['APP_ENV'] === 'production')) {
     throw new Exception('Database password must be set in production environment');
 }
 
-// Create database connection function
+// Create database connection function for sistem_angka (main database)
 function getDatabaseConnection() {
-    global $host, $dbname, $username, $password;
+    global $host, $dbname_angka, $username, $password;
     
     try {
         $options = [
@@ -22,13 +25,36 @@ function getDatabaseConnection() {
             PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci"
         ];
         
-        $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password, $options);
+        $pdo = new PDO("mysql:host=$host;dbname=$dbname_angka;charset=utf8mb4", $username, $password, $options);
         return $pdo;
     } catch (PDOException $e) {
         // Security: Don't expose database details in production
         $message = (isset($_ENV['APP_ENV']) && $_ENV['APP_ENV'] === 'production') 
             ? 'Database connection failed' 
             : 'Database connection failed: ' . $e->getMessage();
+        throw new Exception($message);
+    }
+}
+
+// Create database connection function for sistem_alamat (geographical data database)
+function getAlamatDatabaseConnection() {
+    global $host, $dbname_alamat, $username, $password;
+    
+    try {
+        $options = [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES => false, // Security: Disable emulated prepares
+            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci"
+        ];
+        
+        $pdo = new PDO("mysql:host=$host;dbname=$dbname_alamat;charset=utf8mb4", $username, $password, $options);
+        return $pdo;
+    } catch (PDOException $e) {
+        // Security: Don't expose database details in production
+        $message = (isset($_ENV['APP_ENV']) && $_ENV['APP_ENV'] === 'production') 
+            ? 'Geographical database connection failed' 
+            : 'Geographical database connection failed: ' . $e->getMessage();
         throw new Exception($message);
     }
 }
