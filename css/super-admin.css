@@ -1,0 +1,238 @@
+/* =====================================================
+   SUPER ADMIN SPECIFIC STYLES
+   ===================================================== */
+
+/* Super Admin specific color scheme */
+.super-admin .dashboard-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.super-admin .stat-card {
+    border-left: 4px solid #667eea;
+}
+
+.super-admin .action-card:hover {
+    border-color: #667eea;
+}
+
+/* Super Admin specific stat cards */
+.super-admin .stat-card.bos-stats {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.super-admin .stat-card.bos-stats .stat-number {
+    color: white;
+}
+
+.super-admin .stat-card.bos-stats .stat-label {
+    color: rgba(255,255,255,0.8);
+}
+
+/* Super Admin specific action cards */
+.super-admin .action-card.user-management .action-icon {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.super-admin .action-card.server-management .action-icon {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+}
+
+.super-admin .action-card.financial-report .action-icon {
+    background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+}
+
+.super-admin .action-card.system-settings .action-icon {
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+}
+
+/* Super Admin specific table styles */
+.super-admin .user-table th {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.super-admin .user-table tbody tr:hover {
+    background-color: rgba(102, 126, 234, 0.1);
+}
+
+/* Super Admin specific modal styles */
+.super-admin .modal-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.super-admin .modal-header .btn-close {
+    filter: invert(1);
+}
+
+/* Super Admin specific form styles */
+.super-admin .form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.super-admin .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+}
+
+.super-admin .btn-primary:hover {
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+/* Super Admin specific notification styles */
+.super-admin .notification-item.system-alert {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+    border: none;
+}
+
+.super-admin .notification-item.user-alert {
+    background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+    color: #212529;
+    border: none;
+}
+
+.super-admin .notification-item.success-alert {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    border: none;
+}
+
+/* Super Admin specific dashboard layout */
+.super-admin .dashboard-stats {
+    background: rgba(102, 126, 234, 0.05);
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.super-admin .quick-actions {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+/* Super Admin specific activity feed */
+.super-admin .activity-feed {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.super-admin .activity-feed .card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 15px 15px 0 0;
+}
+
+/* Super Admin specific notification panel */
+.super-admin .notification-panel {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.super-admin .notification-panel .card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 15px 15px 0 0;
+}
+
+/* Super Admin specific responsive adjustments */
+@media (max-width: 768px) {
+    .super-admin .dashboard-stats {
+        padding: 1rem;
+    }
+    
+    .super-admin .quick-actions {
+        padding: 1rem;
+    }
+    
+    .super-admin .stat-card.bos-stats {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Super Admin specific animations */
+.super-admin .stat-card {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.super-admin .action-card {
+    animation: fadeInUp 0.6s ease-out;
+    animation-delay: 0.1s;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Super Admin specific loading states */
+.super-admin .loading-overlay {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+}
+
+.super-admin .spinner {
+    border-top-color: white;
+}
+
+/* Super Admin specific tooltips */
+.super-admin .tooltip-inner {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.super-admin .tooltip.bs-tooltip-top .tooltip-arrow::before {
+    border-top-color: #667eea;
+}
+
+/* Super Admin specific badges */
+.super-admin .badge.badge-super-admin {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.super-admin .badge.badge-bos {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+}
+
+.super-admin .badge.badge-admin-bos {
+    background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+    color: #212529;
+}
+
+/* Super Admin specific status indicators */
+.super-admin .status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+}
+
+.super-admin .status-indicator.online {
+    background: #28a745;
+    box-shadow: 0 0 8px rgba(40, 167, 69, 0.5);
+}
+
+.super-admin .status-indicator.offline {
+    background: #dc3545;
+    box-shadow: 0 0 8px rgba(220, 53, 69, 0.5);
+}
+
+.super-admin .status-indicator.warning {
+    background: #ffc107;
+    box-shadow: 0 0 8px rgba(255, 193, 7, 0.5);
+} 

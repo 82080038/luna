@@ -53,8 +53,19 @@ try {
         sendJsonResponse(false, null, 'Akun tidak aktif', 401);
     }
     
-    // Verify password
-    if (hash('sha256', $input['password']) !== $user['password_hash']) {
+    // Verify password - support both SHA256 and bcrypt
+    $password_verified = false;
+    
+    // Try bcrypt first (for new passwords)
+    if (password_verify($input['password'], $user['password_hash'])) {
+        $password_verified = true;
+    }
+    // Try SHA256 (for old passwords)
+    elseif (hash('sha256', $input['password']) === $user['password_hash']) {
+        $password_verified = true;
+    }
+    
+    if (!$password_verified) {
         sendJsonResponse(false, null, 'Username atau password salah', 401);
     }
     
@@ -108,10 +119,21 @@ try {
     // Cek apakah ini login pertama kali
     $is_first_login = $user['last_login'] === null;
     
-    // Update last_login jika bukan login pertama kali
-    if (!$is_first_login) {
-        $stmt = $pdo->prepare("UPDATE user SET last_login = NOW() WHERE id = ?");
-        $stmt->execute([$user['id']]);
+    // Update last_login setiap kali login berhasil
+    $stmt = $pdo->prepare("UPDATE user SET last_login = NOW() WHERE id = ?");
+    $update_result = $stmt->execute([$user['id']]);
+    
+    if (!$update_result) {
+        sendJsonResponse(false, null, 'Gagal memperbarui last_login', 500);
+    }
+    
+    // Verify the update was successful
+    $stmt = $pdo->prepare("SELECT last_login FROM user WHERE id = ?");
+    $stmt->execute([$user['id']]);
+    $updated_user = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if (!$updated_user['last_login']) {
+        sendJsonResponse(false, null, 'Verifikasi last_login gagal', 500);
     }
     
     // Generate simple token (in production, use JWT)

@@ -6,10 +6,11 @@
     <title>Luna - Super Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="../../css/styles.css" rel="stylesheet">
+    <link href="../../css/core.css" rel="stylesheet">
+    <link href="../../css/super-admin.css" rel="stylesheet">
 </head>
-<body>
-    <div class="dashboard-container">
+<body data-role="super-admin">
+    <div class="dashboard-container super-admin">
         <!-- Header -->
         <div class="dashboard-header">
             <div class="container">
@@ -24,11 +25,11 @@
                         </div>
                     </div>
                     <div class="d-flex align-items-center gap-3">
-                        <button class="btn btn-outline-light btn-sm" onclick="openNotifications()">
+                        <button class="btn btn-outline-light btn-sm" data-action="notifications">
                             <i class="fas fa-bell"></i>
                             <span class="badge bg-danger ms-1">3</span>
                         </button>
-                        <button class="btn btn-outline-light btn-sm" onclick="logout()">
+                        <button class="btn btn-outline-light btn-sm" data-action="logout">
                             <i class="fas fa-sign-out-alt"></i>
                         </button>
                     </div>
@@ -60,7 +61,7 @@
                             </div>
                             <div class="stat-label">BOS (Aktif/Total)</div>
                             <div class="mt-3 text-center">
-                                <button class="btn btn-primary btn-sm" onclick="openAddBosModal()" title="Tambah Bos">
+                                <button class="btn btn-primary btn-sm" data-action="add-bos" title="Tambah Bos">
                                     <i class="fas fa-plus"></i>
                                 </button>
                             </div>
@@ -80,7 +81,7 @@
                         <h5 class="mb-3">Aksi Cepat</h5>
                     </div>
                     <div class="col-md-3 col-sm-6">
-                        <a href="#" class="action-card" onclick="openUserManagement()">
+                        <a href="#" class="action-card" data-action="user-management">
                             <div class="action-icon">
                                 <i class="fas fa-users"></i>
                             </div>
@@ -89,7 +90,7 @@
                         </a>
                     </div>
                     <div class="col-md-3 col-sm-6">
-                        <a href="#" class="action-card" onclick="openServerManagement()">
+                        <a href="#" class="action-card" data-action="server-management">
                             <div class="action-icon">
                                 <i class="fas fa-server"></i>
                             </div>
@@ -98,7 +99,7 @@
                         </a>
                     </div>
                     <div class="col-md-3 col-sm-6">
-                        <a href="#" class="action-card" onclick="openFinancialReport()">
+                        <a href="#" class="action-card" data-action="financial-report">
                             <div class="action-icon">
                                 <i class="fas fa-chart-line"></i>
                             </div>
@@ -107,7 +108,7 @@
                         </a>
                     </div>
                     <div class="col-md-3 col-sm-6">
-                        <a href="#" class="action-card" onclick="openSystemSettings()">
+                        <a href="#" class="action-card" data-action="system-settings">
                             <div class="action-icon">
                                 <i class="fas fa-cog"></i>
                             </div>
@@ -227,8 +228,8 @@
                         </div>
                         <div class="col-md-2">
                             <label class="form-label">&nbsp;</label>
-                            <button type="button" class="btn btn-outline-secondary w-100" onclick="clearFilters()">
-                                <i class="fas fa-times me-1"></i>Clear
+                            <button type="button" class="btn btn-outline-secondary w-100" data-action="clear-filters">
+                                <i class="fas fa-times me-2"></i>Clear Filters
                             </button>
                         </div>
                     </div>
@@ -255,8 +256,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                    <button type="button" class="btn btn-primary" onclick="refreshUserTable()">
-                        <i class="fas fa-refresh me-2"></i>Refresh
+                    <button type="button" class="btn btn-primary" data-action="refresh-users">
+                        <i class="fas fa-sync-alt me-2"></i>Refresh
                     </button>
                 </div>
             </div>
@@ -445,7 +446,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" onclick="submitAddBos()">
+                    <button type="submit" class="btn btn-primary" form="addBosForm">
                         <i class="fas fa-save me-2"></i>Simpan Bos
                     </button>
                 </div>
@@ -454,842 +455,12 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../js/app.js"></script>
+    <script src="../../js/core.js"></script>
+    <script src="../../js/super-admin.js"></script>
+    <script src="../../js/dashboard.js"></script>
     <script>
-        // Check if user is logged in
-        function checkAuth() {
-            const user = LunaUtils.getCurrentUser();
-            if (!user) {
-                window.location.href = '../../index.html';
-                return;
-            }
-            
-            // Check if user is Super Admin
-            if (user.role !== 'Super Admin') {
-                alert('Anda tidak memiliki akses ke halaman ini!');
-                window.location.href = '../../index.html';
-                return;
-            }
-            
-            // Update user info
-            document.querySelector('.user-details h6').textContent = user.nama_lengkap || user.username;
-            document.querySelector('.user-details small').textContent = user.role;
-        }
-
-        // Logout function
-        function logout() {
-            if (confirm('Apakah Anda yakin ingin logout?')) {
-                LunaUtils.logout();
-            }
-        }
-
-        // Modal functions - Manajemen User
-        function openUserManagement() {
-            const modal = new bootstrap.Modal(document.getElementById('userManagementModal'));
-            modal.show();
-            loadAllUsers();
-        }
-
-        function openServerManagement() {
-            alert('Fitur Manajemen Server akan segera hadir!');
-        }
-
-        function openFinancialReport() {
-            alert('Fitur Laporan Keuangan akan segera hadir!');
-        }
-
-        function openSystemSettings() {
-            alert('Fitur Pengaturan Sistem akan segera hadir!');
-        }
-
-        function openNotifications() {
-            alert('Fitur Notifikasi akan segera hadir!');
-        }
-
-        function openAddBosModal() {
-            const modal = new bootstrap.Modal(document.getElementById('addBosModal'));
-            
-            // Clear phone status when modal opens
-            const phoneStatusDiv = document.getElementById('phoneStatus');
-            phoneStatusDiv.style.display = 'none';
-            phoneStatusDiv.innerHTML = '';
-            
-            modal.show();
-            
-            // Add event listener to clear status when modal is hidden
-            document.getElementById('addBosModal').addEventListener('hidden.bs.modal', function() {
-                const phoneStatusDiv = document.getElementById('phoneStatus');
-                phoneStatusDiv.style.display = 'none';
-                phoneStatusDiv.innerHTML = '';
-                lastCheckedPhone = '';
-            });
-        }
-
-        // Add event listener for modal hidden event
-        document.getElementById('addBosModal').addEventListener('hidden.bs.modal', function() {
-            // Clear phone status when modal is closed
-            const phoneStatusDiv = document.getElementById('phoneStatus');
-            phoneStatusDiv.style.display = 'none';
-            phoneStatusDiv.innerHTML = '';
-            
-            // Reset form
-            document.getElementById('addBosForm').reset();
-            
-            // Reset manual change flags
-            if (typeof lastCheckedPhone !== 'undefined') {
-                lastCheckedPhone = '';
-            }
-        });
-
-        // Add Bos form submission
-        function submitAddBos() {
-            const form = document.getElementById('addBosForm');
-            
-            // Basic form validation
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-
-            // Get form data
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData.entries());
-
-            // Additional validation
-            if (data.password.length < 6) {
-                alert('Password minimal 6 karakter!');
-                return;
-            }
-
-            // Validate phone number format
-            if (!/^[0-9]{10,13}$/.test(data.telepon)) {
-                alert('Nomor telepon harus 10-13 digit angka!');
-                return;
-            }
-
-            // Auto-fill WhatsApp if empty
-            if (!data.whatsapp) {
-                data.whatsapp = data.telepon;
-            }
-
-            // Auto-generate username if empty (using phone number)
-            if (!data.username) {
-                data.username = data.telepon;
-            }
-
-            // Auto-generate password if empty (using phone number)
-            if (!data.password) {
-                data.password = data.telepon;
-            }
-
-            // Show loading state
-            const submitBtn = document.querySelector('#addBosModal .btn-primary');
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Menyimpan...';
-            submitBtn.disabled = true;
-
-            // Prepare data for database insertion
-            const bosData = {
-                // Contact information
-                telepon: data.telepon,
-                whatsapp: data.whatsapp,
-
-                // Address information
-                provinsi_id: data.provinsi_id,
-                kabupaten_kota_id: data.kabupaten_kota_id,
-                kecamatan_id: data.kecamatan_id,
-                kelurahan_desa_id: data.kelurahan_desa_id,
-                alamat_lengkap: data.alamat_lengkap,
-
-                // Personal information
-                nama_depan: data.nama_depan,
-                jenis_kelamin: data.jenis_kelamin,
-
-                // User account
-                username: data.username,
-                password: data.password
-            };
-
-            // Call PHP API to insert data into database
-            fetch('../../api/add_bos.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(bosData)
-            })
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    // Show success message
-                    alert('Bos berhasil ditambahkan!\n\nUsername: ' + result.data.username + '\nPassword: ' + result.data.password + '\nNama: ' + result.data.nama_depan + '\n\nPassword wajib diganti saat login pertama kali!');
-                    
-                    // Close modal and reset form
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('addBosModal'));
-                    modal.hide();
-                    form.reset();
-                    resetAllAddressDropdowns();
-
-                    // Refresh BOS statistics
-                    LunaDashboard.loadStatistics();
-                    
-                    // Refresh user management table if open
-                    refreshBosTable();
-                } else {
-                    alert('Error: ' + (result.error || 'Terjadi kesalahan tidak diketahui'));
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Terjadi kesalahan koneksi: ' + error.message);
-            })
-            .finally(() => {
-                // Reset button state
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            });
-        }
-
-        // Address dropdown cascade functionality
-        function setupAddressDropdowns() {
-            const provinsiSelect = document.getElementById('provinsi_id');
-            const kabupatenSelect = document.getElementById('kabupaten_kota_id');
-            const kecamatanSelect = document.getElementById('kecamatan_id');
-            const kelurahanSelect = document.getElementById('kelurahan_desa_id');
-
-            // Load provinces on page load
-            loadProvinsi();
-
-            // Provinsi change event
-            provinsiSelect.addEventListener('change', function() {
-                const provinsiId = this.value;
-                if (provinsiId) {
-                    loadKabupatenKota(provinsiId);
-                } else {
-                    resetDropdown(kabupatenSelect);
-                    resetDropdown(kecamatanSelect);
-                    resetDropdown(kelurahanSelect);
-                }
-            });
-
-            // Kabupaten change event
-            kabupatenSelect.addEventListener('change', function() {
-                const kabupatenId = this.value;
-                if (kabupatenId) {
-                    loadKecamatan(kabupatenId);
-                } else {
-                    resetDropdown(kecamatanSelect);
-                    resetDropdown(kelurahanSelect);
-                }
-            });
-
-            // Kecamatan change event
-            kecamatanSelect.addEventListener('change', function() {
-                const kecamatanId = this.value;
-                if (kecamatanId) {
-                    loadKelurahanDesa(kecamatanId);
-                } else {
-                    resetDropdown(kelurahanSelect);
-                }
-            });
-        }
-
-        function loadProvinsi() {
-            const provinsiSelect = document.getElementById('provinsi_id');
-            
-            fetch('../../api/get_provinsi.php')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(result => {
-                    if (result.success) {
-                        result.data.forEach(provinsi => {
-                            const option = document.createElement('option');
-                            option.value = provinsi.id;
-                            option.textContent = provinsi.nama;
-                            provinsiSelect.appendChild(option);
-                        });
-                    } else {
-                        console.error('Error loading provinces:', result.error);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading provinces:', error);
-                    // Show user-friendly error message
-                    const errorDiv = document.createElement('div');
-                    errorDiv.className = 'alert alert-danger mt-2';
-                    errorDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Gagal memuat data provinsi. Silakan refresh halaman.';
-                    provinsiSelect.parentNode.appendChild(errorDiv);
-                });
-        }
-
-        function loadKabupatenKota(provinsiId) {
-            const kabupatenSelect = document.getElementById('kabupaten_kota_id');
-            resetDropdown(kabupatenSelect);
-            
-            fetch(`../../api/get_kabupaten.php?provinsi_id=${provinsiId}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(result => {
-                    if (result.success) {
-                        result.data.forEach(kabupaten => {
-                            const option = document.createElement('option');
-                            option.value = kabupaten.id;
-                            option.textContent = kabupaten.nama;
-                            kabupatenSelect.appendChild(option);
-                        });
-                        kabupatenSelect.disabled = false;
-                    } else {
-                        console.error('Error loading kabupaten:', result.error);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading kabupaten:', error);
-                });
-        }
-
-        function loadKecamatan(kabupatenId) {
-            const kecamatanSelect = document.getElementById('kecamatan_id');
-            resetDropdown(kecamatanSelect);
-            
-            fetch(`../../api/get_kecamatan.php?kabupaten_kota_id=${kabupatenId}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(result => {
-                    if (result.success) {
-                        result.data.forEach(kecamatan => {
-                            const option = document.createElement('option');
-                            option.value = kecamatan.id;
-                            option.textContent = kecamatan.nama;
-                            kecamatanSelect.appendChild(option);
-                        });
-                        kecamatanSelect.disabled = false;
-                    } else {
-                        console.error('Error loading kecamatan:', result.error);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading kecamatan:', error);
-                });
-        }
-
-        function loadKelurahanDesa(kecamatanId) {
-            const kelurahanSelect = document.getElementById('kelurahan_desa_id');
-            resetDropdown(kelurahanSelect);
-            
-            fetch(`../../api/get_kelurahan.php?kecamatan_id=${kecamatanId}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(result => {
-                    if (result.success) {
-                        result.data.forEach(kelurahan => {
-                            const option = document.createElement('option');
-                            option.value = kelurahan.id;
-                            option.textContent = kelurahan.nama;
-                            kelurahanSelect.appendChild(option);
-                        });
-                        kelurahanSelect.disabled = false;
-                    } else {
-                        console.error('Error loading kelurahan:', result.error);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading kelurahan:', error);
-                });
-        }
-
-        function resetDropdown(select) {
-            select.innerHTML = '<option value="">Pilih ' + select.name.replace('_id', '').replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) + '</option>';
-            select.disabled = true;
-        }
-
-        function resetAddressDropdowns() {
-            resetDropdown(document.getElementById('kabupaten_kota_id'));
-            resetDropdown(document.getElementById('kecamatan_id'));
-            resetDropdown(document.getElementById('kelurahan_desa_id'));
-        }
-
-        function resetAllAddressDropdowns() {
-            resetDropdown(document.getElementById('provinsi_id'));
-            resetDropdown(document.getElementById('kabupaten_kota_id'));
-            resetDropdown(document.getElementById('kecamatan_id'));
-            resetDropdown(document.getElementById('kelurahan_desa_id'));
-            // Reload provinces
-            loadProvinsi();
-        }
-
-        // Load all users data
-        function loadAllUsers() {
-            const tbody = document.getElementById('userTableBody');
-            tbody.innerHTML = '<tr><td colspan="8" class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>';
-            
-            // Fetch all users data from API
-            fetch('../../api/get_all_users.php')
-                .then(response => response.json())
-                .then(result => {
-                    if (result.success) {
-                        displayAllUsers(result.data);
-                        window.allUsersData = result.data; // Store for filtering
-                    } else {
-                        tbody.innerHTML = '<tr><td colspan="8" class="text-center text-danger">Error: ' + result.error + '</td></tr>';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading users data:', error);
-                    tbody.innerHTML = '<tr><td colspan="8" class="text-center text-danger">Error loading data</td></tr>';
-                });
-        }
-
-        // Display all users data in table
-        function displayAllUsers(usersList) {
-            const tbody = document.getElementById('userTableBody');
-            
-            if (usersList.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8" class="text-center">Tidak ada data user</td></tr>';
-                return;
-            }
-            
-            let html = '';
-            usersList.forEach(user => {
-                const statusBadge = user.is_active ? 
-                    '<span class="badge bg-success">Aktif</span>' : 
-                    '<span class="badge bg-danger">Tidak Aktif</span>';
-                
-                const roleBadge = getRoleBadge(user.role);
-                
-                const actionButtons = getActionButtons(user);
-                
-                html += `
-                    <tr>
-                        <td>${user.id}</td>
-                        <td>${user.username}</td>
-                        <td>${user.nama_lengkap}</td>
-                        <td>${user.telepon}</td>
-                        <td>${roleBadge}</td>
-                        <td>${statusBadge}</td>
-                        <td>${user.created_at}</td>
-                        <td>${actionButtons}</td>
-                    </tr>
-                `;
-            });
-            
-            tbody.innerHTML = html;
-        }
-
-        // Get role badge with color
-        function getRoleBadge(role) {
-            const roleColors = {
-                'Super Admin': 'bg-danger',
-                'Bos': 'bg-primary',
-                'Admin Bos': 'bg-info',
-                'Transporter': 'bg-warning',
-                'Penjual': 'bg-success',
-                'Pembeli': 'bg-secondary'
-            };
-            
-            return `<span class="badge ${roleColors[role] || 'bg-secondary'}">${role}</span>`;
-        }
-
-        // Get action buttons based on user role
-        function getActionButtons(user) {
-            let buttons = '';
-            
-            // Super Admin tidak boleh diubah/dihapus
-            if (user.role === 'Super Admin') {
-                return '<span class="text-muted">Tidak dapat diubah</span>';
-            }
-            
-            // Toggle status button
-            const toggleButton = user.is_active ?
-                `<button class="btn btn-sm btn-outline-warning" onclick="toggleUserStatus(${user.id}, false)">Nonaktifkan</button>` :
-                `<button class="btn btn-sm btn-outline-success" onclick="toggleUserStatus(${user.id}, true)">Aktifkan</button>`;
-            
-            buttons += toggleButton + ' ';
-            
-            // Delete button (with confirmation)
-            buttons += `<button class="btn btn-sm btn-outline-danger" onclick="deleteUser(${user.id}, '${user.nama_lengkap}')">Hapus</button>`;
-            
-            return buttons;
-        }
-
-        // Toggle BOS status (aktif/tidak aktif)
-        function toggleBosStatus(bosId, newStatus) {
-            const statusText = newStatus ? 'mengaktifkan' : 'menonaktifkan';
-            
-            if (!confirm(`Apakah Anda yakin ingin ${statusText} BOS ini?`)) {
-                return;
-            }
-            
-            fetch('../../api/toggle_bos_status.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    bos_id: bosId,
-                    is_active: newStatus
-                })
-            })
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    alert(`BOS berhasil ${statusText}!`);
-                    loadBosData(); // Refresh table
-                    LunaDashboard.loadStatistics(); // Refresh statistics
-                } else {
-                    alert('Error: ' + result.error);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Terjadi kesalahan koneksi');
-            });
-        }
-
-        // Delete BOS
-        function deleteBos(bosId) {
-            if (!confirm('Apakah Anda yakin ingin menghapus BOS ini? Tindakan ini tidak dapat dibatalkan!')) {
-                return;
-            }
-            
-            fetch('../../api/delete_bos.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    bos_id: bosId
-                })
-            })
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    alert('BOS berhasil dihapus!');
-                    loadBosData(); // Refresh table
-                    LunaDashboard.loadStatistics(); // Refresh statistics
-                } else {
-                    alert('Error: ' + result.error);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Terjadi kesalahan koneksi');
-            });
-        }
-
-        // Filter users based on role and status
-        function filterUsers() {
-            const roleFilter = document.getElementById('filterRole').value;
-            const statusFilter = document.getElementById('filterStatus').value;
-            const searchTerm = document.getElementById('searchUser').value.toLowerCase();
-            
-            if (!window.allUsersData) return;
-            
-            let filteredUsers = window.allUsersData.filter(user => {
-                // Role filter
-                if (roleFilter && user.role !== roleFilter) return false;
-                
-                // Status filter
-                if (statusFilter !== '' && user.is_active.toString() !== statusFilter) return false;
-                
-                // Search filter
-                if (searchTerm) {
-                    const searchInName = user.nama_lengkap.toLowerCase().includes(searchTerm);
-                    const searchInPhone = user.telepon.includes(searchTerm);
-                    if (!searchInName && !searchInPhone) return false;
-                }
-                
-                return true;
-            });
-            
-            displayAllUsers(filteredUsers);
-        }
-
-        // Search users by name or phone
-        function searchUsers() {
-            filterUsers(); // Reuse filter function
-        }
-
-        // Clear all filters
-        function clearFilters() {
-            document.getElementById('filterRole').value = '';
-            document.getElementById('filterStatus').value = '';
-            document.getElementById('searchUser').value = '';
-            filterUsers();
-        }
-
-        // Toggle user status (aktif/tidak aktif)
-        function toggleUserStatus(userId, newStatus) {
-            const statusText = newStatus ? 'mengaktifkan' : 'menonaktifkan';
-            
-            if (!confirm(`Apakah Anda yakin ingin ${statusText} user ini?`)) {
-                return;
-            }
-            
-            fetch('../../api/toggle_user_status.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    user_id: userId,
-                    is_active: newStatus
-                })
-            })
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    alert(`User berhasil ${statusText}!`);
-                    loadAllUsers(); // Refresh table
-                    LunaDashboard.loadStatistics(); // Refresh statistics
-                } else {
-                    alert('Error: ' + result.error);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Terjadi kesalahan koneksi');
-            });
-        }
-
-        // Delete user
-        function deleteUser(userId, userName) {
-            if (!confirm(`Apakah Anda yakin ingin menghapus user "${userName}"? Tindakan ini tidak dapat dibatalkan!`)) {
-                return;
-            }
-            
-            fetch('../../api/delete_user.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    user_id: userId
-                })
-            })
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    alert('User berhasil dihapus!');
-                    loadAllUsers(); // Refresh table
-                    LunaDashboard.loadStatistics(); // Refresh statistics
-                } else {
-                    alert('Error: ' + result.error);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Terjadi kesalahan koneksi');
-            });
-        }
-
-        // Refresh user table
-        function refreshUserTable() {
-            loadAllUsers();
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            checkAuth();
-            setupAddressDropdowns();
-            setupAutoFill();
-        });
-
-        // Auto-fill functionality
-        function setupAutoFill() {
-            const teleponInput = document.getElementById('telepon');
-            const whatsappInput = document.getElementById('whatsapp');
-            const usernameInput = document.getElementById('username');
-            const passwordInput = document.getElementById('password');
-            const namaDepanInput = document.getElementById('nama_depan');
-            const jenisKelaminSelect = document.getElementById('jenis_kelamin');
-
-            // Track if user has manually changed fields
-            let whatsappManuallyChanged = false;
-            let usernameManuallyChanged = false;
-            let passwordManuallyChanged = false;
-            let namaDepanManuallyChanged = false;
-            let jenisKelaminManuallyChanged = false;
-            let lastCheckedPhone = ''; // Track last checked phone number
-
-            // Check phone number when it's entered
-            teleponInput.addEventListener('blur', function() {
-                const phoneNumber = this.value.trim();
-                
-                if (phoneNumber && /^[0-9]{10,13}$/.test(phoneNumber) && phoneNumber !== lastCheckedPhone) {
-                    lastCheckedPhone = phoneNumber;
-                    checkPhoneNumber(phoneNumber);
-                }
-            });
-
-            // Auto-fill when phone number is entered
-            teleponInput.addEventListener('input', function() {
-                const phoneNumber = this.value;
-                
-                // Auto-fill WhatsApp if not manually changed
-                if (!whatsappManuallyChanged) {
-                    whatsappInput.value = phoneNumber;
-                }
-                
-                // Auto-fill Username if not manually changed
-                if (!usernameManuallyChanged) {
-                    usernameInput.value = phoneNumber;
-                }
-                
-                // Auto-fill Password if not manually changed
-                if (!passwordManuallyChanged) {
-                    passwordInput.value = phoneNumber;
-                }
-            });
-
-            // Track manual changes to WhatsApp
-            whatsappInput.addEventListener('input', function() {
-                if (this.value !== teleponInput.value) {
-                    whatsappManuallyChanged = true;
-                }
-            });
-
-            // Track manual changes to Username
-            usernameInput.addEventListener('input', function() {
-                if (this.value !== teleponInput.value) {
-                    usernameManuallyChanged = true;
-                }
-            });
-
-            // Track manual changes to Password
-            passwordInput.addEventListener('input', function() {
-                if (this.value !== teleponInput.value) {
-                    passwordManuallyChanged = true;
-                }
-            });
-
-            // Track manual changes to Nama Depan
-            namaDepanInput.addEventListener('input', function() {
-                namaDepanManuallyChanged = true;
-            });
-
-            // Track manual changes to Jenis Kelamin
-            jenisKelaminSelect.addEventListener('change', function() {
-                jenisKelaminManuallyChanged = true;
-            });
-
-            // Reset manual change flags when form is reset
-            document.getElementById('addBosForm').addEventListener('reset', function() {
-                whatsappManuallyChanged = false;
-                usernameManuallyChanged = false;
-                passwordManuallyChanged = false;
-                namaDepanManuallyChanged = false;
-                jenisKelaminManuallyChanged = false;
-                lastCheckedPhone = '';
-                
-                // Clear phone status message
-                const phoneStatusDiv = document.getElementById('phoneStatus');
-                phoneStatusDiv.style.display = 'none';
-                phoneStatusDiv.innerHTML = '';
-            });
-        }
-
-        // Function to check phone number in database
-        function checkPhoneNumber(phoneNumber) {
-            const phoneStatusDiv = document.getElementById('phoneStatus');
-            
-            // Show loading message
-            phoneStatusDiv.innerHTML = '<i class="fas fa-spinner fa-spin text-primary"></i> Memeriksa nomor telepon...';
-            phoneStatusDiv.className = 'form-text mt-2 text-primary';
-            phoneStatusDiv.style.display = 'block';
-            
-            fetch(`../../api/check_telepon.php?telepon=${phoneNumber}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(result => {
-                    if (result.success) {
-                        if (result.data.exists) {
-                            // Phone number exists - ask user if they want to use existing data
-                            const confirmMessage = result.data.message + '\n\nApakah akan digunakan sebagai bos baru?';
-                            if (confirm(confirmMessage)) {
-                                // Fill form with existing data
-                                fillFormWithExistingData(result.data.data);
-                                phoneStatusDiv.innerHTML = '<i class="fas fa-info-circle text-info"></i> Data diisi dari database';
-                                phoneStatusDiv.className = 'form-text mt-2 text-info';
-                            } else {
-                                phoneStatusDiv.innerHTML = '<i class="fas fa-exclamation-triangle text-warning"></i> ' + result.data.message;
-                                phoneStatusDiv.className = 'form-text mt-2 text-warning';
-                            }
-                        } else {
-                            // Phone number is available
-                            phoneStatusDiv.innerHTML = '<i class="fas fa-check-circle text-success"></i> ' + result.data.message;
-                            phoneStatusDiv.className = 'form-text mt-2 text-success';
-                        }
-                    } else {
-                        phoneStatusDiv.innerHTML = '<i class="fas fa-exclamation-triangle text-danger"></i> Error: ' + result.error;
-                        phoneStatusDiv.className = 'form-text mt-2 text-danger';
-                        console.error('Error checking phone number:', result.error);
-                    }
-                })
-                .catch(error => {
-                    phoneStatusDiv.innerHTML = '<i class="fas fa-exclamation-triangle text-danger"></i> Error: Gagal memeriksa nomor telepon';
-                    phoneStatusDiv.className = 'form-text mt-2 text-danger';
-                    console.error('Error:', error);
-                });
-        }
-
-        // Function to fill form with existing user data
-        function fillFormWithExistingData(userData) {
-            const teleponInput = document.getElementById('telepon');
-            const whatsappInput = document.getElementById('whatsapp');
-            const usernameInput = document.getElementById('username');
-            const passwordInput = document.getElementById('password');
-            const namaDepanInput = document.getElementById('nama_depan');
-            const jenisKelaminSelect = document.getElementById('jenis_kelamin');
-
-            // Fill the form fields
-            teleponInput.value = userData.telepon;
-            whatsappInput.value = userData.telepon; // Use same number for WhatsApp
-            usernameInput.value = userData.username || userData.telepon;
-            passwordInput.value = userData.telepon; // Default password
-            
-            if (!namaDepanManuallyChanged) {
-                namaDepanInput.value = userData.nama_depan;
-            }
-            
-            if (!jenisKelaminManuallyChanged) {
-                jenisKelaminSelect.value = userData.jenis_kelamin;
-            }
-
-            // Show success message
-            const phoneStatusDiv = document.getElementById('phoneStatus');
-            phoneStatusDiv.innerHTML = '<i class="fas fa-check-circle text-success"></i> Data berhasil diisi dari database! Password: ' + userData.telepon + ' (wajib diganti saat login pertama kali)';
-            phoneStatusDiv.className = 'form-text mt-2 text-success';
-        }
-        
-        // Ensure dashboard loads when page is ready
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Super Admin Dashboard loaded, calling LunaDashboard.loadDashboard()');
-            if (typeof LunaDashboard !== 'undefined') {
-                LunaDashboard.loadDashboard();
-            } else {
-                console.error('LunaDashboard not found');
-            }
-        });
+        // Dashboard functionality is now handled by dashboard.js
+        // This ensures proper separation of concerns
     </script>
 </body>
 </html>

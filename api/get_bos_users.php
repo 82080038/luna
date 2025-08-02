@@ -10,16 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 require_once 'config.php';
 
-function sendJsonResponse($success, $data = null, $error = null, $statusCode = 200) {
-    http_response_code($statusCode);
-    echo json_encode([
-        'success' => $success,
-        'data' => $data,
-        'error' => $error
-    ]);
-    exit;
-}
-
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

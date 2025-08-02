@@ -18,7 +18,7 @@ try {
             SUM(CASE WHEN u.is_active = 1 THEN 1 ELSE 0 END) as aktif
         FROM user u
         JOIN role r ON u.role_id = r.id
-        WHERE r.nama_role IN ('Admin Bos', 'Transporter', 'Penjual', 'Pembeli')
+        WHERE r.nama_role IN ('Bos', 'Admin Bos', 'Transporter', 'Penjual', 'Pembeli')
         GROUP BY r.nama_role
     ");
     
@@ -39,6 +39,10 @@ try {
     
     foreach ($stats as $stat) {
         switch ($stat['nama_role']) {
+            case 'Bos':
+                $formattedStats['admin_bos_aktif'] = (int)$stat['aktif'];
+                $formattedStats['total_admin_bos'] = (int)$stat['total'];
+                break;
             case 'Admin Bos':
                 $formattedStats['admin_bos_aktif'] = (int)$stat['aktif'];
                 $formattedStats['total_admin_bos'] = (int)$stat['total'];

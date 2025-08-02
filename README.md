@@ -9,6 +9,7 @@ Sistem manajemen berbasis web dengan hierarki user yang kompleks, mendukung Supe
 - [Teknologi](#-teknologi)
 - [Instalasi](#-instalasi)
 - [Struktur Database](#-struktur-database)
+- [Struktur Kode](#-struktur-kode)
 - [API Endpoints](#-api-endpoints)
 - [Dashboard](#-dashboard)
 - [Sistem Keamanan](#-sistem-keamanan)
@@ -40,6 +41,12 @@ Sistem manajemen berbasis web dengan hierarki user yang kompleks, mendukung Supe
 - **Cascading Dropdown**: Provinsi → Kabupaten → Kecamatan → Desa
 - **Database Terpisah**: Sistem alamat menggunakan database terpisah
 - **Address Validation**: Validasi alamat lengkap
+
+### 🏗️ Arsitektur Modular
+- **JavaScript Modular**: Fungsi terpisah berdasarkan role
+- **CSS Modular**: Style terpisah berdasarkan role
+- **Reusable Components**: Komponen umum yang dapat digunakan ulang
+- **Event-Driven**: Event delegation untuk performa optimal
 
 ## 👑 Hierarki User
 
@@ -76,7 +83,7 @@ Super Admin
 ### Frontend
 - **HTML5**: Semantic markup
 - **CSS3**: Styling dan responsive design
-- **JavaScript (ES6+)**: Client-side logic
+- **JavaScript (ES6+)**: Client-side logic dengan modular architecture
 - **Bootstrap 5.1.3**: UI framework
 - **Font Awesome 6.0.0**: Icons
 
@@ -158,6 +165,79 @@ Super Admin
 - **cbo_kecamatan**: Data kecamatan
 - **cbo_desa**: Data desa/kelurahan
 
+## 📁 Struktur Kode
+
+### JavaScript Architecture (Modular)
+
+```
+js/
+├── core.js              # Fungsi umum (API calls, utilities, UI)
+├── super-admin.js       # Fungsi khusus Super Admin
+├── bos.js              # Fungsi khusus BOS
+├── admin-bos.js        # Fungsi khusus Admin BOS (future)
+├── transporter.js      # Fungsi khusus Transporter (future)
+├── penjual.js          # Fungsi khusus Penjual (future)
+└── pembeli.js          # Fungsi khusus Pembeli (future)
+```
+
+#### Core Functions (`js/core.js`)
+- **LunaCore**: API calls, user data, address functions, utilities
+- **LunaUI**: Modal, table, form, dropdown functions
+
+#### Role-Specific Functions
+- **LunaSuperAdmin**: Dashboard, user management, BOS management
+- **LunaBos**: Dashboard, Admin BOS/Transporter/Penjual management
+- **LunaAdminBos**: Dashboard, user management (future)
+- **LunaTransporter**: Dashboard, delivery management (future)
+- **LunaPenjual**: Dashboard, product management (future)
+- **LunaPembeli**: Dashboard, order management (future)
+
+### CSS Architecture (Modular)
+
+```
+css/
+├── core.css            # Style umum (layout, components, utilities)
+├── super-admin.css     # Style khusus Super Admin
+├── bos.css            # Style khusus BOS (future)
+├── admin-bos.css      # Style khusus Admin BOS (future)
+├── transporter.css    # Style khusus Transporter (future)
+├── penjual.css        # Style khusus Penjual (future)
+└── pembeli.css        # Style khusus Pembeli (future)
+```
+
+#### Core Styles (`css/core.css`)
+- Global styles, header, cards, forms, buttons, tables
+- Responsive design, animations, utilities
+
+#### Role-Specific Styles
+- Color schemes, custom components, role-specific layouts
+- Responsive adjustments, animations
+
+### File Structure
+
+```
+luna/
+├── api/                    # Backend API endpoints
+├── css/                    # Stylesheets (modular)
+│   ├── core.css
+│   ├── super-admin.css
+│   └── [role-specific].css
+├── js/                     # JavaScript modules
+│   ├── core.js
+│   ├── super-admin.js
+│   └── [role-specific].js
+├── dashboards/             # Role-specific dashboards
+│   ├── super_admin/
+│   ├── bos/
+│   ├── admin_bos/
+│   ├── transporter/
+│   ├── penjual/
+│   └── pembeli/
+├── db/                     # Database schemas
+├── index.html              # Login page
+└── README.md
+```
+
 ## 🔌 API Endpoints
 
 ### Authentication
@@ -194,6 +274,8 @@ Super Admin
 
 ### Super Admin Dashboard
 - **Path**: `/dashboards/super_admin/index.html`
+- **Scripts**: `core.js`, `super-admin.js`
+- **Styles**: `core.css`, `super-admin.css`
 - **Fitur**:
   - Statistik BOS (Aktif/Total)
   - Manajemen User (semua role)
@@ -202,6 +284,8 @@ Super Admin
 
 ### Bos Dashboard
 - **Path**: `/dashboards/bos/index.html`
+- **Scripts**: `core.js`, `bos.js`
+- **Styles**: `core.css`, `bos.css` (future)
 - **Fitur**:
   - Statistik Admin Bos, Transporter, Penjual, Pembeli
   - Manajemen User (Admin Bos, Transporter, Penjual, Pembeli)
@@ -315,19 +399,25 @@ Error: SQLSTATE[HY000] [1045] Access denied for user
 ```
 **Solution**: Periksa konfigurasi database di `api/config.php`
 
-#### 2. File Not Found Error
+#### 2. JavaScript Module Error
 ```
-GET http://localhost/luna/css/styles.css 404 (Not Found)
+Uncaught ReferenceError: LunaCore is not defined
+```
+**Solution**: Pastikan `core.js` dimuat sebelum role-specific scripts
+
+#### 3. CSS Not Loading
+```
+GET http://localhost/luna/css/core.css 404 (Not Found)
 ```
 **Solution**: Periksa struktur folder dan path relatif
 
-#### 3. API Error 500
+#### 4. API Error 500
 ```
 POST /api/auth_login.php 500 (Internal Server Error)
 ```
 **Solution**: Periksa error log PHP dan konfigurasi database
 
-#### 4. Login Failed
+#### 5. Login Failed
 ```
 Username atau password salah
 ```
@@ -344,6 +434,18 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ```
 
+### Browser Console Debugging
+
+Untuk debugging frontend:
+```javascript
+// Cek apakah modules ter-load
+console.log('LunaCore:', typeof LunaCore);
+console.log('LunaSuperAdmin:', typeof LunaSuperAdmin);
+
+// Cek role detection
+console.log('Current role:', document.querySelector('[data-role]')?.getAttribute('data-role'));
+```
+
 ### Database Reset
 
 Jika perlu reset database:
@@ -355,9 +457,63 @@ CREATE DATABASE sistem_angka;
 -- Import ulang dari file SQL
 ```
 
+## 🚀 Development Guidelines
+
+### Adding New Role
+
+1. **Create JavaScript Module**
+   ```javascript
+   // js/new-role.js
+   const LunaNewRole = {
+       init: function() {
+           this.loadDashboard();
+           this.bindEvents();
+       },
+       // ... role-specific functions
+   };
+   ```
+
+2. **Create CSS Module**
+   ```css
+   /* css/new-role.css */
+   .new-role .dashboard-header {
+       background: linear-gradient(135deg, #your-color 0%, #your-color2 100%);
+   }
+   ```
+
+3. **Update HTML**
+   ```html
+   <body data-role="new-role">
+   <div class="dashboard-container new-role">
+   <script src="../../js/core.js"></script>
+   <script src="../../js/new-role.js"></script>
+   <link href="../../css/core.css" rel="stylesheet">
+   <link href="../../css/new-role.css" rel="stylesheet">
+   ```
+
+### Code Organization
+
+- **Separation of Concerns**: Fungsi umum di `core.js`, role-specific di file terpisah
+- **Event Delegation**: Gunakan `data-action` attributes untuk event handling
+- **Modular CSS**: Style umum di `core.css`, role-specific di file terpisah
+- **Consistent Naming**: Gunakan prefix `Luna` untuk semua modules
+
 ## 📝 Changelog
 
-Lihat [CHANGELOG.md](CHANGELOG.md) untuk detail perubahan versi.
+### v2.1.0 - Modular Architecture
+- ✅ Refactored JavaScript into modular structure
+- ✅ Separated CSS by role
+- ✅ Improved code organization and maintainability
+- ✅ Added event delegation for better performance
+- ✅ Enhanced role-based styling
+
+### v2.0.0 - Multi-Role System
+- ✅ Implemented complete multi-role hierarchy
+- ✅ Added BOS statistics and management
+- ✅ Enhanced user management features
+- ✅ Improved address system
+
+Lihat [CHANGELOG.md](CHANGELOG.md) untuk detail perubahan versi lengkap.
 
 ## 🔐 Security Guidelines
 
@@ -367,9 +523,10 @@ Lihat [security_guidelines.md](security_guidelines.md) untuk panduan keamanan le
 
 1. Fork repository
 2. Create feature branch
-3. Commit changes
-4. Push to branch
-5. Create Pull Request
+3. Follow modular architecture guidelines
+4. Commit changes
+5. Push to branch
+6. Create Pull Request
 
 ## 📄 License
 
@@ -384,4 +541,4 @@ Untuk bantuan dan dukungan:
 
 ---
 
-**Luna v2.0** - Sistem Manajemen Multi-Role yang Powerful dan Aman 🌙
+**Luna v2.1** - Sistem Manajemen Multi-Role dengan Arsitektur Modular 🌙

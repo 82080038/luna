@@ -10,16 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 require_once 'config.php';
 
-function sendJsonResponse($success, $data = null, $error = null, $statusCode = 200) {
-    http_response_code($statusCode);
-    echo json_encode([
-        'success' => $success,
-        'data' => $data,
-        'error' => $error
-    ]);
-    exit;
-}
-
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     sendJsonResponse(false, null, 'Method not allowed', 405);
 }
@@ -64,8 +54,19 @@ try {
             sendJsonResponse(false, null, 'User not found', 404);
         }
         
-        // 2. Verifikasi password lama
-        if (!password_verify($input['current_password'], $user['password_hash'])) {
+        // 2. Verifikasi password lama - support both SHA256 and bcrypt
+        $current_password_verified = false;
+        
+        // Try bcrypt first (for new passwords)
+        if (password_verify($input['current_password'], $user['password_hash'])) {
+            $current_password_verified = true;
+        }
+        // Try SHA256 (for old passwords)
+        elseif (hash('sha256', $input['current_password']) === $user['password_hash']) {
+            $current_password_verified = true;
+        }
+        
+        if (!$current_password_verified) {
             sendJsonResponse(false, null, 'Password lama tidak benar', 400);
         }
         
