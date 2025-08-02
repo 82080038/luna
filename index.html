@@ -210,10 +210,18 @@
                     
                     showSuccess('Login berhasil! Redirecting...');
                     
-                    // Redirect based on role
-                    setTimeout(() => {
-                        redirectBasedOnRole(data.data.user.role);
-                    }, 1500);
+                    // Check if this is first login
+                    if (data.data.is_first_login) {
+                        // Redirect to change password page
+                        setTimeout(() => {
+                            window.location.href = 'change_password.html';
+                        }, 1500);
+                    } else {
+                        // Redirect based on role
+                        setTimeout(() => {
+                            redirectBasedOnRole(data.data.user.role);
+                        }, 1500);
+                    }
                 } else {
                     showError(data.error || 'Login gagal');
                 }
@@ -328,17 +336,25 @@
         function redirectBasedOnRole(role) {
             switch(role) {
                 case 'Super Admin':
-                    window.location.href = 'super_admin_dashboard.html';
+                    window.location.href = 'dashboards/super_admin/index.html';
                     break;
                 case 'Bos':
+                    window.location.href = 'dashboards/bos/index.html';
+                    break;
                 case 'Admin Bos':
+                    window.location.href = 'dashboards/admin_bos/index.html';
+                    break;
                 case 'Transporter':
+                    window.location.href = 'dashboards/transporter/index.html';
+                    break;
                 case 'Penjual':
+                    window.location.href = 'dashboards/penjual/index.html';
+                    break;
                 case 'Pembeli':
-                    window.location.href = 'mobile_dashboard.html';
+                    window.location.href = 'dashboards/pembeli/index.html';
                     break;
                 default:
-                    window.location.href = 'mobile_dashboard.html';
+                    window.location.href = 'dashboards/super_admin/index.html';
             }
         }
     </script>

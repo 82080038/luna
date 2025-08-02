@@ -1,13 +1,20 @@
 <?php
-// Database configuration
+// Dual Database Configuration
 $host = 'localhost';
-$dbname = 'sistem_angka';
 $username = 'root';
 $password = '';
 
-// Create database connection function
-function getDatabaseConnection() {
-    global $host, $dbname, $username, $password;
+// Database 1: Sistem utama (sistem_angka)
+$dbname_sistem = 'sistem_angka';
+
+// Database 2: Database alamat (sistem_alamat)
+$dbname_alamat = 'sistem_alamat';
+
+// Create database connection function for main system
+function getDatabaseConnection($database = 'sistem') {
+    global $host, $dbname_sistem, $dbname_alamat, $username, $password;
+    
+    $dbname = ($database === 'alamat') ? $dbname_alamat : $dbname_sistem;
     
     try {
         $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
@@ -16,6 +23,16 @@ function getDatabaseConnection() {
     } catch (PDOException $e) {
         throw new Exception('Database connection failed: ' . $e->getMessage());
     }
+}
+
+// Get address database connection
+function getAddressDatabaseConnection() {
+    return getDatabaseConnection('alamat');
+}
+
+// Get main system database connection
+function getMainDatabaseConnection() {
+    return getDatabaseConnection('sistem');
 }
 
 // Set common headers

@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luna - Super Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../../css/styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="user-info">
+                        <div class="avatar">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="user-details">
+                            <h6 class="mb-0">Super Administrator</h6>
+                            <small>Luna System</small>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <button class="btn btn-outline-light btn-sm" onclick="openNotifications()">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge bg-danger ms-1">3</span>
+                        </button>
+                        <button class="btn btn-outline-light btn-sm" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="dashboard-content">
+            <div class="container">
+                <!-- Stats Row -->
+                <div class="row g-4 mb-4">
+                    <div class="col-md-3 col-sm-6">
+                        <div class="stat-card">
+                            <div class="stat-number">Rp 15.2M</div>
+                            <div class="stat-label">Total Omset</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="stat-card">
+                            <div class="stat-number">2,847</div>
+                            <div class="stat-label">Total Transaksi</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="stat-card">
+                            <div class="stat-number">
+                                <span id="bos-aktif">4</span>/<span id="bos-total">4</span>
+                            </div>
+                            <div class="stat-label">BOS (Aktif/Total)</div>
+                            <div class="mt-3 text-center">
+                                <button class="btn btn-primary btn-sm" onclick="openAddBosModal()" title="Tambah Bos">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="stat-card">
+                            <div class="stat-number">24</div>
+                            <div class="stat-label">Server Aktif</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="row g-4 mb-4">
+                    <div class="col-12">
+                        <h5 class="mb-3">Aksi Cepat</h5>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <a href="#" class="action-card" onclick="openUserManagement()">
+                            <div class="action-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="action-title">Manajemen User</div>
+                            <div class="action-description">Kelola user dan role</div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <a href="#" class="action-card" onclick="openServerManagement()">
+                            <div class="action-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="action-title">Manajemen Server</div>
+                            <div class="action-description">Kelola server dan konfigurasi</div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <a href="#" class="action-card" onclick="openFinancialReport()">
+                            <div class="action-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="action-title">Laporan Keuangan</div>
+                            <div class="action-description">Lihat laporan keuangan</div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <a href="#" class="action-card" onclick="openSystemSettings()">
+                            <div class="action-icon">
+                                <i class="fas fa-cog"></i>
+                            </div>
+                            <div class="action-title">Pengaturan Sistem</div>
+                            <div class="action-description">Konfigurasi sistem</div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Recent Activities -->
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="mb-0">Aktivitas Terbaru</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="transaction-item">
+                                    <div class="transaction-header">
+                                        <div class="transaction-id">User baru terdaftar</div>
+                                        <div class="transaction-amount">2 menit yang lalu</div>
+                                    </div>
+                                    <div class="transaction-details">
+                                        Username: john_doe, Role: Pembeli
+                                    </div>
+                                </div>
+                                <div class="transaction-item">
+                                    <div class="transaction-header">
+                                        <div class="transaction-id">Server Jakarta Pusat</div>
+                                        <div class="transaction-amount">5 menit yang lalu</div>
+                                    </div>
+                                    <div class="transaction-details">
+                                        Status: Online, Transaksi: 45
+                                    </div>
+                                </div>
+                                <div class="transaction-item">
+                                    <div class="transaction-header">
+                                        <div class="transaction-id">Deposit berhasil</div>
+                                        <div class="transaction-amount">10 menit yang lalu</div>
+                                    </div>
+                                    <div class="transaction-details">
+                                        User: jane_smith, Jumlah: Rp 500.000
+                                    </div>
+                                </div>
+                                <div class="transaction-item">
+                                    <div class="transaction-header">
+                                        <div class="transaction-id">Withdraw diproses</div>
+                                        <div class="transaction-amount">15 menit yang lalu</div>
+                                    </div>
+                                    <div class="transaction-details">
+                                        User: bob_wilson, Jumlah: Rp 250.000
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="mb-0">Notifikasi</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-warning alert-sm">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    Server Bandung offline
+                                </div>
+                                <div class="alert alert-info alert-sm">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    5 user baru hari ini
+                                </div>
+                                <div class="alert alert-success alert-sm">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    Backup database berhasil
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Modals -->
+    <div class="modal fade" id="userManagementModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Manajemen User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Filter dan Pencarian -->
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label for="filterRole" class="form-label">Filter Role:</label>
+                            <select class="form-select" id="filterRole" onchange="filterUsers()">
+                                <option value="">Semua Role</option>
+                                <option value="Super Admin">Super Admin</option>
+                                <option value="Bos">Bos</option>
+                                <option value="Admin Bos">Admin Bos</option>
+                                <option value="Transporter">Transporter</option>
+                                <option value="Penjual">Penjual</option>
+                                <option value="Pembeli">Pembeli</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="filterStatus" class="form-label">Filter Status:</label>
+                            <select class="form-select" id="filterStatus" onchange="filterUsers()">
+                                <option value="">Semua Status</option>
+                                <option value="1">Aktif</option>
+                                <option value="0">Tidak Aktif</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="searchUser" class="form-label">Cari (Nama/Telepon):</label>
+                            <input type="text" class="form-control" id="searchUser" placeholder="Masukkan nama atau nomor telepon..." onkeyup="searchUsers()">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">&nbsp;</label>
+                            <button type="button" class="btn btn-outline-secondary w-100" onclick="clearFilters()">
+                                <i class="fas fa-times me-1"></i>Clear
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="userTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Username</th>
+                                    <th>Nama</th>
+                                    <th>Telepon</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th>Tanggal Dibuat</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="userTableBody">
+                                <!-- Data User akan di-load di sini -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-primary" onclick="refreshUserTable()">
+                        <i class="fas fa-refresh me-2"></i>Refresh
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="serverManagementModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Manajemen Server</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nama Server</th>
+                                    <th>Status</th>
+                                    <th>Transaksi</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Server Jakarta Pusat</td>
+                                    <td><span class="badge bg-success">Online</span></td>
+                                    <td>156</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary">Edit</button>
+                                        <button class="btn btn-sm btn-outline-warning">Restart</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Server Bandung</td>
+                                    <td><span class="badge bg-danger">Offline</span></td>
+                                    <td>0</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary">Edit</button>
+                                        <button class="btn btn-sm btn-outline-success">Start</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Bos Modal -->
+    <div class="modal fade" id="addBosModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah User Bos Baru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                                         <form id="addBosForm" autocomplete="off">
+                        <!-- Contact Information -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="border-bottom pb-2 mb-3">
+                                    <i class="fas fa-phone me-2"></i>Informasi Kontak
+                                </h6>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="telepon" class="form-label">Nomor Telepon/HP <span class="text-danger">*</span></label>
+                                                                         <input type="tel" class="form-control" id="telepon" name="telepon" required 
+                                            placeholder="081234567890" pattern="[0-9]{10,13}" autocomplete="off">
+                                    <div class="form-text">Format: 081234567890 (10-13 digit)</div>
+                                    <div id="phoneStatus" class="form-text mt-2" style="display: none;"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="whatsapp" class="form-label">WhatsApp</label>
+                                                                         <input type="tel" class="form-control" id="whatsapp" name="whatsapp" 
+                                            placeholder="081234567890" pattern="[0-9]{10,13}" autocomplete="off">
+                                    <div class="form-text">Biasanya sama dengan nomor telepon</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Address Information -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="border-bottom pb-2 mb-3">
+                                    <i class="fas fa-map-marker-alt me-2"></i>Informasi Alamat
+                                </h6>
+                            </div>
+                                                         <div class="col-md-6">
+                                 <div class="mb-3">
+                                     <label for="provinsi_id" class="form-label">Provinsi <span class="text-danger">*</span></label>
+                                     <select class="form-select" id="provinsi_id" name="provinsi_id" required>
+                                         <option value="">Pilih Provinsi</option>
+                                     </select>
+                                 </div>
+                             </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="kabupaten_kota_id" class="form-label">Kabupaten/Kota <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="kabupaten_kota_id" name="kabupaten_kota_id" required disabled>
+                                        <option value="">Pilih Kabupaten/Kota</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="kecamatan_id" class="form-label">Kecamatan <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="kecamatan_id" name="kecamatan_id" required disabled>
+                                        <option value="">Pilih Kecamatan</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="kelurahan_desa_id" class="form-label">Desa/Kelurahan <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="kelurahan_desa_id" name="kelurahan_desa_id" required disabled>
+                                        <option value="">Pilih Desa/Kelurahan</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="alamat_lengkap" class="form-label">Alamat Lengkap <span class="text-danger">*</span></label>
+                                    <textarea class="form-control" id="alamat_lengkap" name="alamat_lengkap" rows="3" required 
+                                              placeholder="Jl. Contoh No. 123"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Personal Information -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="border-bottom pb-2 mb-3">
+                                    <i class="fas fa-user me-2"></i>Informasi Pribadi
+                                </h6>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="nama_depan" class="form-label">Nama Depan <span class="text-danger">*</span></label>
+                                                                         <input type="text" class="form-control" id="nama_depan" name="nama_depan" required autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="jenis_kelamin" class="form-label">Jenis Kelamin <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="jenis_kelamin" name="jenis_kelamin" required>
+                                        <option value="">Pilih Jenis Kelamin</option>
+                                        <option value="L">Laki-laki</option>
+                                        <option value="P">Perempuan</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- User Account Information -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="border-bottom pb-2 mb-3">
+                                    <i class="fas fa-key me-2"></i>Informasi Akun
+                                </h6>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
+                                                                         <input type="text" class="form-control" id="username" name="username" 
+                                            placeholder="Biasanya menggunakan nomor HP" autocomplete="off">
+                                    <div class="form-text">Biasanya menggunakan nomor HP</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
+                                                                         <input type="password" class="form-control" id="password" name="password" 
+                                            placeholder="Default menggunakan nomor HP" autocomplete="new-password">
+                                    <div class="form-text">Default menggunakan nomor HP (wajib diganti oleh user)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" onclick="submitAddBos()">
+                        <i class="fas fa-save me-2"></i>Simpan Bos
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../js/app.js"></script>
+    <script>
+        // Check if user is logged in
+        function checkAuth() {
+            const user = LunaUtils.getCurrentUser();
+            if (!user) {
+                window.location.href = '../../index.html';
+                return;
+            }
+            
+            // Check if user is Super Admin
+            if (user.role !== 'Super Admin') {
+                alert('Anda tidak memiliki akses ke halaman ini!');
+                window.location.href = '../../index.html';
+                return;
+            }
+            
+            // Update user info
+            document.querySelector('.user-details h6').textContent = user.nama_lengkap || user.username;
+            document.querySelector('.user-details small').textContent = user.role;
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                LunaUtils.logout();
+            }
+        }
+
+        // Modal functions - Manajemen User
+        function openUserManagement() {
+            const modal = new bootstrap.Modal(document.getElementById('userManagementModal'));
+            modal.show();
+            loadAllUsers();
+        }
+
+        function openServerManagement() {
+            alert('Fitur Manajemen Server akan segera hadir!');
+        }
+
+        function openFinancialReport() {
+            alert('Fitur Laporan Keuangan akan segera hadir!');
+        }
+
+        function openSystemSettings() {
+            alert('Fitur Pengaturan Sistem akan segera hadir!');
+        }
+
+        function openNotifications() {
+            alert('Fitur Notifikasi akan segera hadir!');
+        }
+
+        function openAddBosModal() {
+            const modal = new bootstrap.Modal(document.getElementById('addBosModal'));
+            
+            // Clear phone status when modal opens
+            const phoneStatusDiv = document.getElementById('phoneStatus');
+            phoneStatusDiv.style.display = 'none';
+            phoneStatusDiv.innerHTML = '';
+            
+            modal.show();
+            
+            // Add event listener to clear status when modal is hidden
+            document.getElementById('addBosModal').addEventListener('hidden.bs.modal', function() {
+                const phoneStatusDiv = document.getElementById('phoneStatus');
+                phoneStatusDiv.style.display = 'none';
+                phoneStatusDiv.innerHTML = '';
+                lastCheckedPhone = '';
+            });
+        }
+
+        // Add event listener for modal hidden event
+        document.getElementById('addBosModal').addEventListener('hidden.bs.modal', function() {
+            // Clear phone status when modal is closed
+            const phoneStatusDiv = document.getElementById('phoneStatus');
+            phoneStatusDiv.style.display = 'none';
+            phoneStatusDiv.innerHTML = '';
+            
+            // Reset form
+            document.getElementById('addBosForm').reset();
+            
+            // Reset manual change flags
+            if (typeof lastCheckedPhone !== 'undefined') {
+                lastCheckedPhone = '';
+            }
+        });
+
+        // Add Bos form submission
+        function submitAddBos() {
+            const form = document.getElementById('addBosForm');
+            
+            // Basic form validation
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            // Get form data
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            // Additional validation
+            if (data.password.length < 6) {
+                alert('Password minimal 6 karakter!');
+                return;
+            }
+
+            // Validate phone number format
+            if (!/^[0-9]{10,13}$/.test(data.telepon)) {
+                alert('Nomor telepon harus 10-13 digit angka!');
+                return;
+            }
+
+            // Auto-fill WhatsApp if empty
+            if (!data.whatsapp) {
+                data.whatsapp = data.telepon;
+            }
+
+            // Auto-generate username if empty (using phone number)
+            if (!data.username) {
+                data.username = data.telepon;
+            }
+
+            // Auto-generate password if empty (using phone number)
+            if (!data.password) {
+                data.password = data.telepon;
+            }
+
+            // Show loading state
+            const submitBtn = document.querySelector('#addBosModal .btn-primary');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Menyimpan...';
+            submitBtn.disabled = true;
+
+            // Prepare data for database insertion
+            const bosData = {
+                // Contact information
+                telepon: data.telepon,
+                whatsapp: data.whatsapp,
+
+                // Address information
+                provinsi_id: data.provinsi_id,
+                kabupaten_kota_id: data.kabupaten_kota_id,
+                kecamatan_id: data.kecamatan_id,
+                kelurahan_desa_id: data.kelurahan_desa_id,
+                alamat_lengkap: data.alamat_lengkap,
+
+                // Personal information
+                nama_depan: data.nama_depan,
+                jenis_kelamin: data.jenis_kelamin,
+
+                // User account
+                username: data.username,
+                password: data.password
+            };
+
+            // Call PHP API to insert data into database
+            fetch('../../api/add_bos.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(bosData)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    // Show success message
+                    alert('Bos berhasil ditambahkan!\n\nUsername: ' + result.data.username + '\nPassword: ' + result.data.password + '\nNama: ' + result.data.nama_depan + '\n\nPassword wajib diganti saat login pertama kali!');
+                    
+                    // Close modal and reset form
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('addBosModal'));
+                    modal.hide();
+                    form.reset();
+                    resetAllAddressDropdowns();
+
+                    // Refresh BOS statistics
+                    LunaDashboard.loadStatistics();
+                    
+                    // Refresh user management table if open
+                    refreshBosTable();
+                } else {
+                    alert('Error: ' + (result.error || 'Terjadi kesalahan tidak diketahui'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan koneksi: ' + error.message);
+            })
+            .finally(() => {
+                // Reset button state
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            });
+        }
+
+        // Address dropdown cascade functionality
+        function setupAddressDropdowns() {
+            const provinsiSelect = document.getElementById('provinsi_id');
+            const kabupatenSelect = document.getElementById('kabupaten_kota_id');
+            const kecamatanSelect = document.getElementById('kecamatan_id');
+            const kelurahanSelect = document.getElementById('kelurahan_desa_id');
+
+            // Load provinces on page load
+            loadProvinsi();
+
+            // Provinsi change event
+            provinsiSelect.addEventListener('change', function() {
+                const provinsiId = this.value;
+                if (provinsiId) {
+                    loadKabupatenKota(provinsiId);
+                } else {
+                    resetDropdown(kabupatenSelect);
+                    resetDropdown(kecamatanSelect);
+                    resetDropdown(kelurahanSelect);
+                }
+            });
+
+            // Kabupaten change event
+            kabupatenSelect.addEventListener('change', function() {
+                const kabupatenId = this.value;
+                if (kabupatenId) {
+                    loadKecamatan(kabupatenId);
+                } else {
+                    resetDropdown(kecamatanSelect);
+                    resetDropdown(kelurahanSelect);
+                }
+            });
+
+            // Kecamatan change event
+            kecamatanSelect.addEventListener('change', function() {
+                const kecamatanId = this.value;
+                if (kecamatanId) {
+                    loadKelurahanDesa(kecamatanId);
+                } else {
+                    resetDropdown(kelurahanSelect);
+                }
+            });
+        }
+
+        function loadProvinsi() {
+            const provinsiSelect = document.getElementById('provinsi_id');
+            
+            fetch('../../api/get_provinsi.php')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    if (result.success) {
+                        result.data.forEach(provinsi => {
+                            const option = document.createElement('option');
+                            option.value = provinsi.id;
+                            option.textContent = provinsi.nama;
+                            provinsiSelect.appendChild(option);
+                        });
+                    } else {
+                        console.error('Error loading provinces:', result.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading provinces:', error);
+                    // Show user-friendly error message
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'alert alert-danger mt-2';
+                    errorDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Gagal memuat data provinsi. Silakan refresh halaman.';
+                    provinsiSelect.parentNode.appendChild(errorDiv);
+                });
+        }
+
+        function loadKabupatenKota(provinsiId) {
+            const kabupatenSelect = document.getElementById('kabupaten_kota_id');
+            resetDropdown(kabupatenSelect);
+            
+            fetch(`../../api/get_kabupaten.php?provinsi_id=${provinsiId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    if (result.success) {
+                        result.data.forEach(kabupaten => {
+                            const option = document.createElement('option');
+                            option.value = kabupaten.id;
+                            option.textContent = kabupaten.nama;
+                            kabupatenSelect.appendChild(option);
+                        });
+                        kabupatenSelect.disabled = false;
+                    } else {
+                        console.error('Error loading kabupaten:', result.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading kabupaten:', error);
+                });
+        }
+
+        function loadKecamatan(kabupatenId) {
+            const kecamatanSelect = document.getElementById('kecamatan_id');
+            resetDropdown(kecamatanSelect);
+            
+            fetch(`../../api/get_kecamatan.php?kabupaten_kota_id=${kabupatenId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    if (result.success) {
+                        result.data.forEach(kecamatan => {
+                            const option = document.createElement('option');
+                            option.value = kecamatan.id;
+                            option.textContent = kecamatan.nama;
+                            kecamatanSelect.appendChild(option);
+                        });
+                        kecamatanSelect.disabled = false;
+                    } else {
+                        console.error('Error loading kecamatan:', result.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading kecamatan:', error);
+                });
+        }
+
+        function loadKelurahanDesa(kecamatanId) {
+            const kelurahanSelect = document.getElementById('kelurahan_desa_id');
+            resetDropdown(kelurahanSelect);
+            
+            fetch(`../../api/get_kelurahan.php?kecamatan_id=${kecamatanId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    if (result.success) {
+                        result.data.forEach(kelurahan => {
+                            const option = document.createElement('option');
+                            option.value = kelurahan.id;
+                            option.textContent = kelurahan.nama;
+                            kelurahanSelect.appendChild(option);
+                        });
+                        kelurahanSelect.disabled = false;
+                    } else {
+                        console.error('Error loading kelurahan:', result.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading kelurahan:', error);
+                });
+        }
+
+        function resetDropdown(select) {
+            select.innerHTML = '<option value="">Pilih ' + select.name.replace('_id', '').replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) + '</option>';
+            select.disabled = true;
+        }
+
+        function resetAddressDropdowns() {
+            resetDropdown(document.getElementById('kabupaten_kota_id'));
+            resetDropdown(document.getElementById('kecamatan_id'));
+            resetDropdown(document.getElementById('kelurahan_desa_id'));
+        }
+
+        function resetAllAddressDropdowns() {
+            resetDropdown(document.getElementById('provinsi_id'));
+            resetDropdown(document.getElementById('kabupaten_kota_id'));
+            resetDropdown(document.getElementById('kecamatan_id'));
+            resetDropdown(document.getElementById('kelurahan_desa_id'));
+            // Reload provinces
+            loadProvinsi();
+        }
+
+        // Load all users data
+        function loadAllUsers() {
+            const tbody = document.getElementById('userTableBody');
+            tbody.innerHTML = '<tr><td colspan="8" class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>';
+            
+            // Fetch all users data from API
+            fetch('../../api/get_all_users.php')
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        displayAllUsers(result.data);
+                        window.allUsersData = result.data; // Store for filtering
+                    } else {
+                        tbody.innerHTML = '<tr><td colspan="8" class="text-center text-danger">Error: ' + result.error + '</td></tr>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading users data:', error);
+                    tbody.innerHTML = '<tr><td colspan="8" class="text-center text-danger">Error loading data</td></tr>';
+                });
+        }
+
+        // Display all users data in table
+        function displayAllUsers(usersList) {
+            const tbody = document.getElementById('userTableBody');
+            
+            if (usersList.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="text-center">Tidak ada data user</td></tr>';
+                return;
+            }
+            
+            let html = '';
+            usersList.forEach(user => {
+                const statusBadge = user.is_active ? 
+                    '<span class="badge bg-success">Aktif</span>' : 
+                    '<span class="badge bg-danger">Tidak Aktif</span>';
+                
+                const roleBadge = getRoleBadge(user.role);
+                
+                const actionButtons = getActionButtons(user);
+                
+                html += `
+                    <tr>
+                        <td>${user.id}</td>
+                        <td>${user.username}</td>
+                        <td>${user.nama_lengkap}</td>
+                        <td>${user.telepon}</td>
+                        <td>${roleBadge}</td>
+                        <td>${statusBadge}</td>
+                        <td>${user.created_at}</td>
+                        <td>${actionButtons}</td>
+                    </tr>
+                `;
+            });
+            
+            tbody.innerHTML = html;
+        }
+
+        // Get role badge with color
+        function getRoleBadge(role) {
+            const roleColors = {
+                'Super Admin': 'bg-danger',
+                'Bos': 'bg-primary',
+                'Admin Bos': 'bg-info',
+                'Transporter': 'bg-warning',
+                'Penjual': 'bg-success',
+                'Pembeli': 'bg-secondary'
+            };
+            
+            return `<span class="badge ${roleColors[role] || 'bg-secondary'}">${role}</span>`;
+        }
+
+        // Get action buttons based on user role
+        function getActionButtons(user) {
+            let buttons = '';
+            
+            // Super Admin tidak boleh diubah/dihapus
+            if (user.role === 'Super Admin') {
+                return '<span class="text-muted">Tidak dapat diubah</span>';
+            }
+            
+            // Toggle status button
+            const toggleButton = user.is_active ?
+                `<button class="btn btn-sm btn-outline-warning" onclick="toggleUserStatus(${user.id}, false)">Nonaktifkan</button>` :
+                `<button class="btn btn-sm btn-outline-success" onclick="toggleUserStatus(${user.id}, true)">Aktifkan</button>`;
+            
+            buttons += toggleButton + ' ';
+            
+            // Delete button (with confirmation)
+            buttons += `<button class="btn btn-sm btn-outline-danger" onclick="deleteUser(${user.id}, '${user.nama_lengkap}')">Hapus</button>`;
+            
+            return buttons;
+        }
+
+        // Toggle BOS status (aktif/tidak aktif)
+        function toggleBosStatus(bosId, newStatus) {
+            const statusText = newStatus ? 'mengaktifkan' : 'menonaktifkan';
+            
+            if (!confirm(`Apakah Anda yakin ingin ${statusText} BOS ini?`)) {
+                return;
+            }
+            
+            fetch('../../api/toggle_bos_status.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    bos_id: bosId,
+                    is_active: newStatus
+                })
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    alert(`BOS berhasil ${statusText}!`);
+                    loadBosData(); // Refresh table
+                    LunaDashboard.loadStatistics(); // Refresh statistics
+                } else {
+                    alert('Error: ' + result.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan koneksi');
+            });
+        }
+
+        // Delete BOS
+        function deleteBos(bosId) {
+            if (!confirm('Apakah Anda yakin ingin menghapus BOS ini? Tindakan ini tidak dapat dibatalkan!')) {
+                return;
+            }
+            
+            fetch('../../api/delete_bos.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    bos_id: bosId
+                })
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    alert('BOS berhasil dihapus!');
+                    loadBosData(); // Refresh table
+                    LunaDashboard.loadStatistics(); // Refresh statistics
+                } else {
+                    alert('Error: ' + result.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan koneksi');
+            });
+        }
+
+        // Filter users based on role and status
+        function filterUsers() {
+            const roleFilter = document.getElementById('filterRole').value;
+            const statusFilter = document.getElementById('filterStatus').value;
+            const searchTerm = document.getElementById('searchUser').value.toLowerCase();
+            
+            if (!window.allUsersData) return;
+            
+            let filteredUsers = window.allUsersData.filter(user => {
+                // Role filter
+                if (roleFilter && user.role !== roleFilter) return false;
+                
+                // Status filter
+                if (statusFilter !== '' && user.is_active.toString() !== statusFilter) return false;
+                
+                // Search filter
+                if (searchTerm) {
+                    const searchInName = user.nama_lengkap.toLowerCase().includes(searchTerm);
+                    const searchInPhone = user.telepon.includes(searchTerm);
+                    if (!searchInName && !searchInPhone) return false;
+                }
+                
+                return true;
+            });
+            
+            displayAllUsers(filteredUsers);
+        }
+
+        // Search users by name or phone
+        function searchUsers() {
+            filterUsers(); // Reuse filter function
+        }
+
+        // Clear all filters
+        function clearFilters() {
+            document.getElementById('filterRole').value = '';
+            document.getElementById('filterStatus').value = '';
+            document.getElementById('searchUser').value = '';
+            filterUsers();
+        }
+
+        // Toggle user status (aktif/tidak aktif)
+        function toggleUserStatus(userId, newStatus) {
+            const statusText = newStatus ? 'mengaktifkan' : 'menonaktifkan';
+            
+            if (!confirm(`Apakah Anda yakin ingin ${statusText} user ini?`)) {
+                return;
+            }
+            
+            fetch('../../api/toggle_user_status.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_id: userId,
+                    is_active: newStatus
+                })
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    alert(`User berhasil ${statusText}!`);
+                    loadAllUsers(); // Refresh table
+                    LunaDashboard.loadStatistics(); // Refresh statistics
+                } else {
+                    alert('Error: ' + result.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan koneksi');
+            });
+        }
+
+        // Delete user
+        function deleteUser(userId, userName) {
+            if (!confirm(`Apakah Anda yakin ingin menghapus user "${userName}"? Tindakan ini tidak dapat dibatalkan!`)) {
+                return;
+            }
+            
+            fetch('../../api/delete_user.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_id: userId
+                })
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    alert('User berhasil dihapus!');
+                    loadAllUsers(); // Refresh table
+                    LunaDashboard.loadStatistics(); // Refresh statistics
+                } else {
+                    alert('Error: ' + result.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan koneksi');
+            });
+        }
+
+        // Refresh user table
+        function refreshUserTable() {
+            loadAllUsers();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            setupAddressDropdowns();
+            setupAutoFill();
+        });
+
+        // Auto-fill functionality
+        function setupAutoFill() {
+            const teleponInput = document.getElementById('telepon');
+            const whatsappInput = document.getElementById('whatsapp');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const namaDepanInput = document.getElementById('nama_depan');
+            const jenisKelaminSelect = document.getElementById('jenis_kelamin');
+
+            // Track if user has manually changed fields
+            let whatsappManuallyChanged = false;
+            let usernameManuallyChanged = false;
+            let passwordManuallyChanged = false;
+            let namaDepanManuallyChanged = false;
+            let jenisKelaminManuallyChanged = false;
+            let lastCheckedPhone = ''; // Track last checked phone number
+
+            // Check phone number when it's entered
+            teleponInput.addEventListener('blur', function() {
+                const phoneNumber = this.value.trim();
+                
+                if (phoneNumber && /^[0-9]{10,13}$/.test(phoneNumber) && phoneNumber !== lastCheckedPhone) {
+                    lastCheckedPhone = phoneNumber;
+                    checkPhoneNumber(phoneNumber);
+                }
+            });
+
+            // Auto-fill when phone number is entered
+            teleponInput.addEventListener('input', function() {
+                const phoneNumber = this.value;
+                
+                // Auto-fill WhatsApp if not manually changed
+                if (!whatsappManuallyChanged) {
+                    whatsappInput.value = phoneNumber;
+                }
+                
+                // Auto-fill Username if not manually changed
+                if (!usernameManuallyChanged) {
+                    usernameInput.value = phoneNumber;
+                }
+                
+                // Auto-fill Password if not manually changed
+                if (!passwordManuallyChanged) {
+                    passwordInput.value = phoneNumber;
+                }
+            });
+
+            // Track manual changes to WhatsApp
+            whatsappInput.addEventListener('input', function() {
+                if (this.value !== teleponInput.value) {
+                    whatsappManuallyChanged = true;
+                }
+            });
+
+            // Track manual changes to Username
+            usernameInput.addEventListener('input', function() {
+                if (this.value !== teleponInput.value) {
+                    usernameManuallyChanged = true;
+                }
+            });
+
+            // Track manual changes to Password
+            passwordInput.addEventListener('input', function() {
+                if (this.value !== teleponInput.value) {
+                    passwordManuallyChanged = true;
+                }
+            });
+
+            // Track manual changes to Nama Depan
+            namaDepanInput.addEventListener('input', function() {
+                namaDepanManuallyChanged = true;
+            });
+
+            // Track manual changes to Jenis Kelamin
+            jenisKelaminSelect.addEventListener('change', function() {
+                jenisKelaminManuallyChanged = true;
+            });
+
+            // Reset manual change flags when form is reset
+            document.getElementById('addBosForm').addEventListener('reset', function() {
+                whatsappManuallyChanged = false;
+                usernameManuallyChanged = false;
+                passwordManuallyChanged = false;
+                namaDepanManuallyChanged = false;
+                jenisKelaminManuallyChanged = false;
+                lastCheckedPhone = '';
+                
+                // Clear phone status message
+                const phoneStatusDiv = document.getElementById('phoneStatus');
+                phoneStatusDiv.style.display = 'none';
+                phoneStatusDiv.innerHTML = '';
+            });
+        }
+
+        // Function to check phone number in database
+        function checkPhoneNumber(phoneNumber) {
+            const phoneStatusDiv = document.getElementById('phoneStatus');
+            
+            // Show loading message
+            phoneStatusDiv.innerHTML = '<i class="fas fa-spinner fa-spin text-primary"></i> Memeriksa nomor telepon...';
+            phoneStatusDiv.className = 'form-text mt-2 text-primary';
+            phoneStatusDiv.style.display = 'block';
+            
+            fetch(`../../api/check_telepon.php?telepon=${phoneNumber}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    if (result.success) {
+                        if (result.data.exists) {
+                            // Phone number exists - ask user if they want to use existing data
+                            const confirmMessage = result.data.message + '\n\nApakah akan digunakan sebagai bos baru?';
+                            if (confirm(confirmMessage)) {
+                                // Fill form with existing data
+                                fillFormWithExistingData(result.data.data);
+                                phoneStatusDiv.innerHTML = '<i class="fas fa-info-circle text-info"></i> Data diisi dari database';
+                                phoneStatusDiv.className = 'form-text mt-2 text-info';
+                            } else {
+                                phoneStatusDiv.innerHTML = '<i class="fas fa-exclamation-triangle text-warning"></i> ' + result.data.message;
+                                phoneStatusDiv.className = 'form-text mt-2 text-warning';
+                            }
+                        } else {
+                            // Phone number is available
+                            phoneStatusDiv.innerHTML = '<i class="fas fa-check-circle text-success"></i> ' + result.data.message;
+                            phoneStatusDiv.className = 'form-text mt-2 text-success';
+                        }
+                    } else {
+                        phoneStatusDiv.innerHTML = '<i class="fas fa-exclamation-triangle text-danger"></i> Error: ' + result.error;
+                        phoneStatusDiv.className = 'form-text mt-2 text-danger';
+                        console.error('Error checking phone number:', result.error);
+                    }
+                })
+                .catch(error => {
+                    phoneStatusDiv.innerHTML = '<i class="fas fa-exclamation-triangle text-danger"></i> Error: Gagal memeriksa nomor telepon';
+                    phoneStatusDiv.className = 'form-text mt-2 text-danger';
+                    console.error('Error:', error);
+                });
+        }
+
+        // Function to fill form with existing user data
+        function fillFormWithExistingData(userData) {
+            const teleponInput = document.getElementById('telepon');
+            const whatsappInput = document.getElementById('whatsapp');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const namaDepanInput = document.getElementById('nama_depan');
+            const jenisKelaminSelect = document.getElementById('jenis_kelamin');
+
+            // Fill the form fields
+            teleponInput.value = userData.telepon;
+            whatsappInput.value = userData.telepon; // Use same number for WhatsApp
+            usernameInput.value = userData.username || userData.telepon;
+            passwordInput.value = userData.telepon; // Default password
+            
+            if (!namaDepanManuallyChanged) {
+                namaDepanInput.value = userData.nama_depan;
+            }
+            
+            if (!jenisKelaminManuallyChanged) {
+                jenisKelaminSelect.value = userData.jenis_kelamin;
+            }
+
+            // Show success message
+            const phoneStatusDiv = document.getElementById('phoneStatus');
+            phoneStatusDiv.innerHTML = '<i class="fas fa-check-circle text-success"></i> Data berhasil diisi dari database! Password: ' + userData.telepon + ' (wajib diganti saat login pertama kali)';
+            phoneStatusDiv.className = 'form-text mt-2 text-success';
+        }
+        
+        // Ensure dashboard loads when page is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Super Admin Dashboard loaded, calling LunaDashboard.loadDashboard()');
+            if (typeof LunaDashboard !== 'undefined') {
+                LunaDashboard.loadDashboard();
+            } else {
+                console.error('LunaDashboard not found');
+            }
+        });
+    </script>
+</body>
+</html>

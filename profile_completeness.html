@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelengkapan Profil - Luna</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <style>
+        .profile-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem 0;
+        }
+        .profile-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .completeness-progress {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .progress-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+            position: relative;
+        }
+        .progress-complete { background: #28a745; color: white; }
+        .progress-mostly { background: #ffc107; color: #212529; }
+        .progress-partial { background: #fd7e14; color: white; }
+        .progress-incomplete { background: #dc3545; color: white; }
+        
+        .section-card {
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        .section-title {
+            font-weight: 600;
+            color: #495057;
+        }
+        .completeness-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .badge-complete { background: #d4edda; color: #155724; }
+        .badge-incomplete { background: #f8d7da; color: #721c24; }
+        .badge-partial { background: #fff3cd; color: #856404; }
+        
+        .field-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f1f3f4;
+        }
+        .field-item:last-child { border-bottom: none; }
+        .field-label {
+            font-weight: 500;
+            color: #495057;
+        }
+        .field-value {
+            color: #6c757d;
+            text-align: right;
+        }
+        .field-status {
+            margin-left: 0.5rem;
+        }
+        .status-complete { color: #28a745; }
+        .status-incomplete { color: #dc3545; }
+        .status-optional { color: #6c757d; }
+        
+        .edit-btn {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <!-- Header -->
+                    <div class="text-center mb-4">
+                        <h2 class="text-white mb-2">
+                            <i class="fas fa-user-check me-2"></i>
+                            Kelengkapan Profil
+                        </h2>
+                        <p class="text-white-50">Lengkapi data profil Anda untuk pengalaman yang lebih baik</p>
+                    </div>
+
+                    <!-- Profile Card -->
+                    <div class="profile-card">
+                        <!-- User Info -->
+                        <div class="text-center mb-4">
+                            <div class="mb-3">
+                                <i class="fas fa-user-circle fa-4x text-primary"></i>
+                            </div>
+                            <h4 id="userName">Loading...</h4>
+                            <p class="text-muted" id="userRole">Loading...</p>
+                        </div>
+
+                        <!-- Completeness Progress -->
+                        <div class="completeness-progress">
+                            <div class="text-center">
+                                <div class="progress-circle" id="progressCircle">
+                                    <span id="progressText">0%</span>
+                                </div>
+                                <h5 id="progressStatus">Memeriksa kelengkapan...</h5>
+                                <p class="text-muted mb-0">Kelengkapan data profil Anda</p>
+                            </div>
+                        </div>
+
+                        <!-- Personal Data Section -->
+                        <div class="section-card">
+                            <div class="section-header">
+                                <h6 class="section-title">
+                                    <i class="fas fa-user me-2"></i>
+                                    Data Pribadi
+                                </h6>
+                                <span class="completeness-badge" id="personalBadge">Loading...</span>
+                            </div>
+                            <div id="personalDataList">
+                                <!-- Data will be loaded here -->
+                            </div>
+                            <div class="text-center mt-3">
+                                <button class="btn btn-outline-primary btn-sm" onclick="editPersonalData()">
+                                    <i class="fas fa-edit me-1"></i>
+                                    Edit Data Pribadi
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Contact Data Section -->
+                        <div class="section-card">
+                            <div class="section-header">
+                                <h6 class="section-title">
+                                    <i class="fas fa-address-book me-2"></i>
+                                    Data Kontak
+                                </h6>
+                                <span class="completeness-badge" id="contactBadge">Loading...</span>
+                            </div>
+                            <div id="contactDataList">
+                                <!-- Data will be loaded here -->
+                            </div>
+                            <div class="text-center mt-3">
+                                <button class="btn btn-outline-primary btn-sm" onclick="editContactData()">
+                                    <i class="fas fa-edit me-1"></i>
+                                    Edit Data Kontak
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Address Data Section -->
+                        <div class="section-card">
+                            <div class="section-header">
+                                <h6 class="section-title">
+                                    <i class="fas fa-map-marker-alt me-2"></i>
+                                    Data Alamat
+                                </h6>
+                                <span class="completeness-badge" id="addressBadge">Loading...</span>
+                            </div>
+                            <div id="addressDataList">
+                                <!-- Data will be loaded here -->
+                            </div>
+                            <div class="text-center mt-3">
+                                <button class="btn btn-outline-primary btn-sm" onclick="editAddressData()">
+                                    <i class="fas fa-edit me-1"></i>
+                                    Edit Data Alamat
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="text-center mt-4">
+                            <button class="btn btn-primary me-2" onclick="continueToDashboard()">
+                                <i class="fas fa-arrow-right me-1"></i>
+                                Lanjutkan ke Dashboard
+                            </button>
+                            <button class="btn btn-outline-secondary" onclick="logout()">
+                                <i class="fas fa-sign-out-alt me-1"></i>
+                                Logout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Get user data from localStorage
+        const userData = JSON.parse(localStorage.getItem('luna_user') || '{}');
+        const token = localStorage.getItem('luna_token');
+
+        if (!userData.id || !token) {
+            alert('Sesi tidak valid. Silakan login kembali.');
+            window.location.href = 'index.html';
+        }
+
+        // Load profile completeness data
+        async function loadProfileCompleteness() {
+            try {
+                const response = await fetch('api/check_user_completeness.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        user_id: userData.id
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    displayProfileData(result.data);
+                } else {
+                    alert('Error: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat memuat data profil');
+            }
+        }
+
+        // Display profile data
+        function displayProfileData(data) {
+            // Update user info
+            document.getElementById('userName').textContent = data.nama_lengkap;
+            document.getElementById('userRole').textContent = data.role;
+
+            // Update progress
+            const progressCircle = document.getElementById('progressCircle');
+            const progressText = document.getElementById('progressText');
+            const progressStatus = document.getElementById('progressStatus');
+
+            progressText.textContent = data.completeness_percentage + '%';
+            
+            // Set progress circle color
+            progressCircle.className = 'progress-circle';
+            if (data.completeness_status === 'complete') {
+                progressCircle.classList.add('progress-complete');
+                progressStatus.textContent = 'Profil Lengkap';
+            } else if (data.completeness_status === 'mostly_complete') {
+                progressCircle.classList.add('progress-mostly');
+                progressStatus.textContent = 'Profil Hampir Lengkap';
+            } else if (data.completeness_status === 'partially_complete') {
+                progressCircle.classList.add('progress-partial');
+                progressStatus.textContent = 'Profil Sebagian Lengkap';
+            } else {
+                progressCircle.classList.add('progress-incomplete');
+                progressStatus.textContent = 'Profil Belum Lengkap';
+            }
+
+            // Display personal data
+            displayPersonalData(data.personal_data, data.completeness.personal_data);
+            
+            // Display contact data
+            displayContactData(data.contact_data, data.completeness.contact_data);
+            
+            // Display address data
+            displayAddressData(data.address_data, data.completeness.address_data);
+        }
+
+        // Display personal data
+        function displayPersonalData(personalData, completeness) {
+            const container = document.getElementById('personalDataList');
+            const badge = document.getElementById('personalBadge');
+            
+            // Calculate personal data completeness
+            const totalFields = Object.keys(completeness).length;
+            const completedFields = Object.values(completeness).filter(Boolean).length;
+            const percentage = Math.round((completedFields / totalFields) * 100);
+            
+            // Set badge
+            if (percentage === 100) {
+                badge.className = 'completeness-badge badge-complete';
+                badge.textContent = 'Lengkap';
+            } else if (percentage >= 75) {
+                badge.className = 'completeness-badge badge-partial';
+                badge.textContent = 'Hampir Lengkap';
+            } else {
+                badge.className = 'completeness-badge badge-incomplete';
+                badge.textContent = 'Belum Lengkap';
+            }
+
+            // Create data list
+            container.innerHTML = `
+                <div class="field-item">
+                    <span class="field-label">Nama Depan</span>
+                    <div class="d-flex align-items-center">
+                        <span class="field-value">${personalData.nama_depan || '-'}</span>
+                        <i class="fas fa-${completeness.nama_depan ? 'check' : 'times'} field-status status-${completeness.nama_depan ? 'complete' : 'incomplete'}"></i>
+                    </div>
+                </div>
+                <div class="field-item">
+                    <span class="field-label">Nama Tengah</span>
+                    <div class="d-flex align-items-center">
+                        <span class="field-value">${personalData.nama_tengah || '-'}</span>
+                        <i class="fas fa-minus field-status status-optional"></i>
+                    </div>
+                </div>
+                <div class="field-item">
+                    <span class="field-label">Nama Belakang</span>
+                    <div class="d-flex align-items-center">
+                        <span class="field-value">${personalData.nama_belakang || '-'}</span>
+                        <i class="fas fa-minus field-status status-optional"></i>
+                    </div>
+                </div>
+                <div class="field-item">
+                    <span class="field-label">Jenis Kelamin</span>
+                    <div class="d-flex align-items-center">
+                        <span class="field-value">${personalData.jenis_kelamin || '-'}</span>
+                        <i class="fas fa-${completeness.jenis_kelamin ? 'check' : 'times'} field-status status-${completeness.jenis_kelamin ? 'complete' : 'incomplete'}"></i>
+                    </div>
+                </div>
+                <div class="field-item">
+                    <span class="field-label">Tanggal Lahir</span>
+                    <div class="d-flex align-items-center">
+                        <span class="field-value">${personalData.tanggal_lahir || '-'}</span>
+                        <i class="fas fa-${completeness.tanggal_lahir ? 'check' : 'times'} field-status status-${completeness.tanggal_lahir ? 'complete' : 'incomplete'}"></i>
+                    </div>
+                </div>
+                <div class="field-item">
+                    <span class="field-label">Tempat Lahir</span>
+                    <div class="d-flex align-items-center">
+                        <span class="field-value">${personalData.tempat_lahir || '-'}</span>
+                        <i class="fas fa-${completeness.tempat_lahir ? 'check' : 'times'} field-status status-${completeness.tempat_lahir ? 'complete' : 'incomplete'}"></i>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Display contact data
+        function displayContactData(contactData, completeness) {
+            const container = document.getElementById('contactDataList');
+            const badge = document.getElementById('contactBadge');
+            
+            // Calculate contact data completeness
+            const totalFields = Object.keys(completeness).length;
+            const completedFields = Object.values(completeness).filter(Boolean).length;
+            const percentage = Math.round((completedFields / totalFields) * 100);
+            
+            // Set badge
+            if (percentage === 100) {
+                badge.className = 'completeness-badge badge-complete';
+                badge.textContent = 'Lengkap';
+            } else if (percentage >= 75) {
+                badge.className = 'completeness-badge badge-partial';
+                badge.textContent = 'Hampir Lengkap';
+            } else {
+                badge.className = 'completeness-badge badge-incomplete';
+                badge.textContent = 'Belum Lengkap';
+            }
+
+            // Create data list
+            container.innerHTML = `
+                <div class="field-item">
+                    <span class="field-label">Email</span>
+                    <div class="d-flex align-items-center">
+                        <span class="field-value">${contactData.email || '-'}</span>
+                        <i class="fas fa-${completeness.email ? 'check' : 'times'} field-status status-${completeness.email ? 'complete' : 'incomplete'}"></i>
+                    </div>
+                </div>
+                <div class="field-item">
+                    <span class="field-label">Telepon</span>
+                    <div class="d-flex align-items-center">
+                        <span class="field-value">${contactData.telepon || '-'}</span>
+                        <i class="fas fa-${completeness.telepon ? 'check' : 'times'} field-status status-${completeness.telepon ? 'complete' : 'incomplete'}"></i>
+                    </div>
+                </div>
+                <div class="field-item">
+                    <span class="field-label">NIK</span>
+                    <div class="d-flex align-items-center">
+                        <span class="field-value">${contactData.nik || '-'}</span>
+                        <i class="fas fa-${completeness.nik ? 'check' : 'times'} field-status status-${completeness.nik ? 'complete' : 'incomplete'}"></i>
+                    </div>
+                </div>
+                <div class="field-item">
+                    <span class="field-label">WhatsApp</span>
+                    <div class="d-flex align-items-center">
+                        <span class="field-value">${contactData.whatsapp || '-'}</span>
+                        <i class="fas fa-${completeness.whatsapp ? 'check' : 'times'} field-status status-${completeness.whatsapp ? 'complete' : 'incomplete'}"></i>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Display address data
+        function displayAddressData(addressData, completeness) {
+            const container = document.getElementById('addressDataList');
+            const badge = document.getElementById('addressBadge');
+            
+            // Calculate address data completeness
+            const totalFields = Object.keys(completeness).length;
+            const completedFields = Object.values(completeness).filter(Boolean).length;
+            const percentage = Math.round((completedFields / totalFields) * 100);
+            
+            // Set badge
+            if (percentage === 100) {
+                badge.className = 'completeness-badge badge-complete';
+                badge.textContent = 'Lengkap';
+            } else if (percentage >= 75) {
+                badge.className = 'completeness-badge badge-partial';
+                badge.textContent = 'Hampir Lengkap';
+            } else {
+                badge.className = 'completeness-badge badge-incomplete';
+                badge.textContent = 'Belum Lengkap';
+            }
+
+            if (addressData.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-muted py-3">
+                        <i class="fas fa-map-marker-alt fa-2x mb-2"></i>
+                        <p>Belum ada data alamat</p>
+                    </div>
+                `;
+            } else {
+                let addressHtml = '';
+                addressData.forEach((address, index) => {
+                    const isPrimary = address.is_primary == 1;
+                    addressHtml += `
+                        <div class="field-item">
+                            <span class="field-label">
+                                ${isPrimary ? 'Alamat Utama' : 'Alamat ' + (index + 1)}
+                                ${isPrimary ? '<span class="badge bg-primary ms-1">Utama</span>' : ''}
+                            </span>
+                            <div class="d-flex align-items-center">
+                                <span class="field-value">
+                                    ${address.alamat_lengkap || '-'}<br>
+                                    <small class="text-muted">
+                                        ${address.nama_desa || '-'}, ${address.nama_kecamatan || '-'}<br>
+                                        ${address.nama_kab_kota || '-'}, ${address.nama_propinsi || '-'}
+                                    </small>
+                                </span>
+                                <i class="fas fa-${completeness.address_details ? 'check' : 'times'} field-status status-${completeness.address_details ? 'complete' : 'incomplete'}"></i>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = addressHtml;
+            }
+        }
+
+        // Edit functions (placeholders for now)
+        function editPersonalData() {
+            alert('Fitur edit data pribadi akan segera tersedia');
+        }
+
+        function editContactData() {
+            alert('Fitur edit data kontak akan segera tersedia');
+        }
+
+        function editAddressData() {
+            alert('Fitur edit data alamat akan segera tersedia');
+        }
+
+        // Continue to dashboard
+        function continueToDashboard() {
+            switch (userData.role) {
+                case 'Super Admin':
+                    window.location.href = 'dashboards/super_admin/index.html';
+                    break;
+                case 'Bos':
+                    window.location.href = 'dashboards/bos/index.html';
+                    break;
+                case 'Admin Bos':
+                    window.location.href = 'dashboards/admin_bos/index.html';
+                    break;
+                case 'Transporter':
+                    window.location.href = 'dashboards/transporter/index.html';
+                    break;
+                case 'Penjual':
+                    window.location.href = 'dashboards/penjual/index.html';
+                    break;
+                case 'Pembeli':
+                    window.location.href = 'dashboards/pembeli/index.html';
+                    break;
+                default:
+                    window.location.href = 'index.html';
+            }
+        }
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('luna_user');
+            localStorage.removeItem('luna_token');
+            window.location.href = 'index.html';
+        }
+
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProfileCompleteness();
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Bos Dashboard - Luna System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../../css/styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="user-info">
+                        <div class="avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-details">
+                            <h6 class="mb-0">Admin Bos Dashboard</h6>
+                            <small id="user-role">Admin Bos</small>
+                        </div>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-outline-danger btn-sm logout-btn">
+                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+            <div class="container">
+                <!-- Statistics Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-3 mb-3">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-truck"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="total-transporter">0</div>
+                                <div class="stat-label">Transporter</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="total-penjual">0</div>
+                                <div class="stat-label">Penjual</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="omset-hari">0</div>
+                                <div class="stat-label">Omset Hari Ini</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="target-pencapaian">0%</div>
+                                <div class="stat-label">Target Pencapaian</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-4 mb-3">
+                        <div class="action-card">
+                            <div class="action-icon">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div class="action-content">
+                                <h5 class="action-title">Tambah Transporter</h5>
+                                <p class="action-description">Kelola transporter untuk distribusi</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="action-card">
+                            <div class="action-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="action-content">
+                                <h5 class="action-title">Laporan Performa</h5>
+                                <p class="action-description">Monitor kinerja transporter</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="action-card">
+                            <div class="action-icon">
+                                <i class="fas fa-cog"></i>
+                            </div>
+                            <div class="action-content">
+                                <h5 class="action-title">Pengaturan</h5>
+                                <p class="action-description">Konfigurasi sistem</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activities -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-history me-2"></i>
+                                    Aktivitas Terbaru
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="recent-activities">
+                                    <div class="text-center text-muted">
+                                        <i class="fas fa-spinner fa-spin me-2"></i>
+                                        Loading aktivitas...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../js/app.js"></script>
+    <script>
+        // Initialize Admin Bos Dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            if (!LunaAuth.checkAuth()) {
+                LunaUtils.redirect('../index.html');
+                return;
+            }
+
+            // Check if user is Admin Bos
+            const user = LunaUtils.getCurrentUser();
+            if (user.role !== 'Admin Bos') {
+                alert('Anda tidak memiliki akses ke halaman ini!');
+                LunaUtils.redirect('../index.html');
+                return;
+            }
+
+            // Update user info
+            document.getElementById('user-role').textContent = user.role;
+            
+            // Load dashboard data
+            loadAdminBosDashboard();
+        });
+
+        function loadAdminBosDashboard() {
+            // Load statistics
+            loadAdminBosStatistics();
+            
+            // Load recent activities
+            loadRecentActivities();
+        }
+
+        function loadAdminBosStatistics() {
+            // Simulate loading statistics
+            setTimeout(() => {
+                document.getElementById('total-transporter').textContent = '8';
+                document.getElementById('total-penjual').textContent = '15';
+                document.getElementById('omset-hari').textContent = 'Rp 2.5M';
+                document.getElementById('target-pencapaian').textContent = '85%';
+            }, 1000);
+        }
+
+        function loadRecentActivities() {
+            // Simulate loading activities
+            setTimeout(() => {
+                const activities = [
+                    { type: 'user', message: 'Transporter baru ditambahkan: Ahmad', time: '3 menit yang lalu' },
+                    { type: 'transaction', message: 'Transaksi transporter: Rp 750.000', time: '8 menit yang lalu' },
+                    { type: 'system', message: 'Laporan harian telah dibuat', time: '15 menit yang lalu' }
+                ];
+
+                const activitiesHtml = activities.map(activity => `
+                    <div class="transaction-item">
+                        <div class="transaction-header">
+                            <span class="transaction-id">${activity.type.toUpperCase()}</span>
+                            <span class="transaction-time">${activity.time}</span>
+                        </div>
+                        <div class="transaction-details">
+                            ${activity.message}
+                        </div>
+                    </div>
+                `).join('');
+
+                document.getElementById('recent-activities').innerHTML = activitiesHtml;
+            }, 1500);
+        }
+    </script>
+</body>
+</html> 

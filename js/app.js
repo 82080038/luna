@@ -1,6 +1,6 @@
 // =====================================================
 // LUNA SYSTEM - MAIN JAVASCRIPT FILE
-// Sistem Tebakan Angka Mobile-First
+// Sistem Tebakan Angka
 // =====================================================
 
 // Global variables
@@ -436,17 +436,25 @@ const LunaAuth = {
     redirectBasedOnRole: function(role) {
         switch(role) {
             case 'Super Admin':
-                LunaUtils.redirect('super_admin_dashboard.html');
+                LunaUtils.redirect('dashboards/super_admin/index.html');
                 break;
             case 'Bos':
+                LunaUtils.redirect('dashboards/bos/index.html');
+                break;
             case 'Admin Bos':
+                LunaUtils.redirect('dashboards/admin_bos/index.html');
+                break;
             case 'Transporter':
+                LunaUtils.redirect('dashboards/transporter/index.html');
+                break;
             case 'Penjual':
+                LunaUtils.redirect('dashboards/penjual/index.html');
+                break;
             case 'Pembeli':
-                LunaUtils.redirect('mobile_dashboard.html');
+                LunaUtils.redirect('dashboards/pembeli/index.html');
                 break;
             default:
-                LunaUtils.redirect('mobile_dashboard.html');
+                LunaUtils.redirect('dashboards/super_admin/index.html');
         }
     }
 };
@@ -497,7 +505,7 @@ const LunaDashboard = {
     // Load statistics
     loadStatistics: async function() {
         try {
-            // Load BOS statistics
+            // Load BOS statistics only
             const bosStats = await LunaUtils.apiCall('/api/get_bos_statistics.php');
             
             if (bosStats.success) {
@@ -511,27 +519,12 @@ const LunaDashboard = {
                 console.log('BOS Statistics loaded:', bosStats.data);
             } else {
                 console.error('Failed to load BOS statistics:', bosStats.message);
-            }
-            
-            // Load other statistics (if API exists)
-            try {
-                const stats = await LunaUtils.apiCall('/api/dashboard/statistics');
+                // Set default values if API fails
+                const bosAktifEl = document.getElementById('bos-aktif');
+                const bosTotalEl = document.getElementById('bos-total');
                 
-                // Update stat cards
-                if (document.getElementById('omset-hari-ini')) {
-                    document.getElementById('omset-hari-ini').textContent = LunaUtils.formatCurrency(stats.omset_hari_ini);
-                }
-                if (document.getElementById('total-transaksi')) {
-                    document.getElementById('total-transaksi').textContent = stats.total_transaksi;
-                }
-                if (document.getElementById('komisi')) {
-                    document.getElementById('komisi').textContent = LunaUtils.formatCurrency(stats.komisi);
-                }
-                if (document.getElementById('target')) {
-                    document.getElementById('target').textContent = stats.target + '%';
-                }
-            } catch (statsError) {
-                console.log('Dashboard statistics API not available, using default values');
+                if (bosAktifEl) bosAktifEl.textContent = '0';
+                if (bosTotalEl) bosTotalEl.textContent = '0';
             }
             
         } catch (error) {
@@ -548,26 +541,9 @@ const LunaDashboard = {
     // Load recent transactions
     loadRecentTransactions: async function() {
         try {
-            const transactions = await LunaUtils.apiCall('/api/dashboard/recent-transactions');
-            
-            const container = document.querySelector('.recent-transactions');
-            if (!container) return;
-
-            let html = '<h6 class="mb-3">Transaksi Terbaru</h6>';
-            
-            transactions.forEach(transaction => {
-                html += `
-                    <div class="transaction-item">
-                        <div class="transaction-info">
-                            <h6>${transaction.kode_transaksi}</h6>
-                            <p>${transaction.detail}</p>
-                        </div>
-                        <div class="transaction-amount">${transaction.amount > 0 ? '+' : ''}${LunaUtils.formatCurrency(transaction.amount)}</div>
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
+            // Skip loading recent transactions for now
+            // This feature will be implemented later
+            console.log('Recent transactions feature not yet implemented');
             
         } catch (error) {
             console.error('Error loading recent transactions:', error);
@@ -784,17 +760,10 @@ document.addEventListener('DOMContentLoaded', function() {
             if (firstInput) firstInput.focus();
             break;
             
-        case 'mobile_dashboard.html':
+        case 'super_admin_dashboard.html':
             // Dashboard page
-            console.log('Mobile dashboard page detected');
+            console.log('Super admin dashboard page detected');
             LunaDashboard.loadDashboard();
-            break;
-            
-        case 'input_tebakan_mobile.html':
-            // Tebakan page
-            if (LunaAuth.checkAuth()) {
-                LunaTebakan.init();
-            }
             break;
     }
 

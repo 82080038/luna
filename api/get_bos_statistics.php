@@ -1,64 +1,66 @@
 <?php
-header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
+require_once 'config.php';
+setCommonHeaders();
 
-// Handle preflight requests
-if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
+// Only allow GET requests
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+    sendJsonResponse(false, null, 'Method not allowed', 405);
 }
 
-require_once 'config.php';
-
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // Get BOS role ID (role_id = 2 for 'Bos')
-    $bosRoleId = 2;
-
-    // Query to get BOS statistics
-    $query = "
+    $pdo = getDatabaseConnection();
+    
+    // Get statistics for all users that BOS can manage
+    $stmt = $pdo->prepare("
         SELECT 
-            COUNT(*) as total_bos,
-            SUM(CASE WHEN u.is_active = 1 THEN 1 ELSE 0 END) as bos_aktif,
-            SUM(CASE WHEN u.is_active = 0 THEN 1 ELSE 0 END) as bos_tidak_aktif
+            r.nama_role,
+            COUNT(*) as total,
+            SUM(CASE WHEN u.is_active = 1 THEN 1 ELSE 0 END) as aktif
         FROM user u
-        WHERE u.role_id = :bos_role_id
-    ";
-
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':bos_role_id', $bosRoleId, PDO::PARAM_INT);
+        JOIN role r ON u.role_id = r.id
+        WHERE r.nama_role IN ('Admin Bos', 'Transporter', 'Penjual', 'Pembeli')
+        GROUP BY r.nama_role
+    ");
+    
     $stmt->execute();
-
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    // Format response
-    $response = [
-        'success' => true,
-        'data' => [
-            'total_bos' => (int)$result['total_bos'],
-            'bos_aktif' => (int)$result['bos_aktif'],
-            'bos_tidak_aktif' => (int)$result['bos_tidak_aktif']
-        ],
-        'message' => 'BOS statistics retrieved successfully'
+    $stats = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    // Format data for response
+    $formattedStats = [
+        'admin_bos_aktif' => 0,
+        'total_admin_bos' => 0,
+        'transporter_aktif' => 0,
+        'total_transporter' => 0,
+        'penjual_aktif' => 0,
+        'total_penjual' => 0,
+        'pembeli_aktif' => 0,
+        'total_pembeli' => 0
     ];
-
-    echo json_encode($response);
-
-} catch (PDOException $e) {
-    http_response_code(500);
-    echo json_encode([
-        'success' => false,
-        'message' => 'Database error: ' . $e->getMessage()
-    ]);
+    
+    foreach ($stats as $stat) {
+        switch ($stat['nama_role']) {
+            case 'Admin Bos':
+                $formattedStats['admin_bos_aktif'] = (int)$stat['aktif'];
+                $formattedStats['total_admin_bos'] = (int)$stat['total'];
+                break;
+            case 'Transporter':
+                $formattedStats['transporter_aktif'] = (int)$stat['aktif'];
+                $formattedStats['total_transporter'] = (int)$stat['total'];
+                break;
+            case 'Penjual':
+                $formattedStats['penjual_aktif'] = (int)$stat['aktif'];
+                $formattedStats['total_penjual'] = (int)$stat['total'];
+                break;
+            case 'Pembeli':
+                $formattedStats['pembeli_aktif'] = (int)$stat['aktif'];
+                $formattedStats['total_pembeli'] = (int)$stat['total'];
+                break;
+        }
+    }
+    
+    sendJsonResponse(true, $formattedStats, 'Statistik user berhasil diambil');
+    
 } catch (Exception $e) {
-    http_response_code(500);
-    echo json_encode([
-        'success' => false,
-        'message' => 'Server error: ' . $e->getMessage()
-    ]);
+    sendJsonResponse(false, null, 'Error: ' . $e->getMessage(), 500);
 }
 ?> 

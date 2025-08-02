@@ -27,8 +27,9 @@ try {
         SELECT 
             u.id,
             u.username,
-            u.password,
+            u.password_hash,
             u.is_active,
+            u.last_login,
             r.nama_role,
             o.nama_depan,
             o.nama_tengah,
@@ -53,7 +54,7 @@ try {
     }
     
     // Verify password
-    if (!password_verify($input['password'], $user['password'])) {
+    if (hash('sha256', $input['password']) !== $user['password_hash']) {
         sendJsonResponse(false, null, 'Username atau password salah', 401);
     }
     
@@ -104,6 +105,15 @@ try {
         'is_active' => (bool)$user['is_active']
     ];
     
+    // Cek apakah ini login pertama kali
+    $is_first_login = $user['last_login'] === null;
+    
+    // Update last_login jika bukan login pertama kali
+    if (!$is_first_login) {
+        $stmt = $pdo->prepare("UPDATE user SET last_login = NOW() WHERE id = ?");
+        $stmt->execute([$user['id']]);
+    }
+    
     // Generate simple token (in production, use JWT)
     $token = bin2hex(random_bytes(32));
     
@@ -113,6 +123,7 @@ try {
     sendJsonResponse(true, [
         'user' => $userData,
         'token' => $token,
+        'is_first_login' => $is_first_login,
         'message' => 'Login berhasil'
     ]);
     
