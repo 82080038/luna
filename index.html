@@ -193,32 +193,40 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Loading...';
             btn.disabled = true;
             
-            // Simulate API call
-            setTimeout(() => {
-                // Demo login - replace with actual API call
-                if (username === 'admin' && password === 'admin123') {
-                    // Set user data for Super Admin
-                    const userData = {
-                        id: 1,
-                        username: 'admin',
-                        role: 'Super Admin',
-                        nama_lengkap: 'Super Administrator',
-                        email: 'admin@luna.com'
-                    };
-                    LunaUtils.setCurrentUser(userData);
+            // Call login API
+            fetch('api/auth_login.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Set user data
+                    LunaUtils.setCurrentUser(data.data.user);
+                    localStorage.setItem('luna_token', data.data.token);
                     
                     showSuccess('Login berhasil! Redirecting...');
+                    
+                    // Redirect based on role
                     setTimeout(() => {
-                        window.location.href = 'super_admin_dashboard.html';
+                        redirectBasedOnRole(data.data.user.role);
                     }, 1500);
                 } else {
-                    showError('Username atau password salah');
+                    showError(data.error || 'Login gagal');
                 }
-                
+            })
+            .catch(error => {
+                console.error('Login error:', error);
+                showError('Terjadi kesalahan saat login');
+            })
+            .finally(() => {
                 // Reset button
                 btn.innerHTML = originalText;
                 btn.disabled = false;
-            }, 2000);
+            });
         });
 
         document.getElementById('register-form').addEventListener('submit', function(e) {
@@ -314,6 +322,24 @@
             
             const activeForm = document.querySelector('.auth-form.active');
             activeForm.appendChild(successDiv);
+        }
+
+        // Redirect based on user role
+        function redirectBasedOnRole(role) {
+            switch(role) {
+                case 'Super Admin':
+                    window.location.href = 'super_admin_dashboard.html';
+                    break;
+                case 'Bos':
+                case 'Admin Bos':
+                case 'Transporter':
+                case 'Penjual':
+                case 'Pembeli':
+                    window.location.href = 'mobile_dashboard.html';
+                    break;
+                default:
+                    window.location.href = 'mobile_dashboard.html';
+            }
         }
     </script>
 </body>

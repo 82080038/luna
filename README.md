@@ -45,20 +45,55 @@ Sistem manajemen tebakan angka yang modern dan responsif dengan arsitektur multi
 # 3. Jalankan db/insert_dummy_optimized.sql untuk data dummy
 ```
 
-### **3. Login Demo**
+### **3. Login Demo - Role-Based System**
 ```
-Username: admin
-Password: admin123
-Role: Super Admin
+1. Super Admin:
+   Username: admin
+   Password: admin123
+   Redirect: super_admin_dashboard.html
+
+2. Bos:
+   Username: bos1
+   Password: bos123
+   Redirect: mobile_dashboard.html
+
+3. Admin Bos:
+   Username: adminbos1
+   Password: adminbos123
+   Redirect: mobile_dashboard.html
+
+4. Transporter:
+   Username: transporter1
+   Password: transporter123
+   Redirect: mobile_dashboard.html
+
+5. Penjual:
+   Username: penjual1
+   Password: penjual123
+   Redirect: mobile_dashboard.html
+
+6. Pembeli:
+   Username: pembeli1
+   Password: pembeli123
+   Redirect: mobile_dashboard.html
 ```
 
 ### **4. Test API Connection**
 ```bash
+# Test Login API (POST request)
+http://localhost/luna/api/auth_login.php
+
 # Test BOS Statistics API
 http://localhost/luna/api/get_bos_statistics.php
 
 # Test Add Bos API (POST request)
 http://localhost/luna/api/add_bos.php
+```
+
+### **5. Setup Test Data**
+```bash
+# Import test data untuk login dengan berbagai role
+SOURCE db/insert_login_test_data.sql;
 ```
 
 ## 📁 **Struktur File**
@@ -75,9 +110,11 @@ luna/
 │   ├── sistem_angka.sql # Database schema original
 │   ├── fix_database_structure.sql # Perbaikan struktur database
 │   ├── insert_dummy_optimized.sql # Data dummy untuk testing
+│   ├── insert_login_test_data.sql # Data test untuk login dengan berbagai role
 │   └── DATABASE_OPTIMIZATION_GUIDE.md # Panduan optimasi database
 ├── api/
 │   ├── config.php # Konfigurasi database dan helper functions
+│   ├── auth_login.php # API untuk login dengan role-based authentication
 │   ├── get_bos_statistics.php # API untuk statistik BOS
 │   ├── add_bos.php # API untuk menambah user Bos baru
 │   ├── check_telepon.php # API untuk cek nomor telepon
